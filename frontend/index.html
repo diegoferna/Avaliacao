@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliação dos Serviços de Saúde</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-2xl mx-auto px-4 py-6 text-center">
+      <div class="text-4xl mb-2">🏥</div>
+      <h1 class="text-2xl font-bold text-gray-800">Avaliação dos Serviços de Saúde</h1>
+      <p class="text-gray-500 text-sm mt-1">Sua opinião ajuda a melhorar o atendimento</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-2xl mx-auto px-4 py-6">
+    <form id="form-avaliacao" novalidate>
+
+      <!-- Seleção da Unidade -->
+      <div class="bg-white rounded-xl shadow-sm p-5 mb-4">
+        <label for="unidade" class="block text-sm font-semibold text-gray-700 mb-2">
+          📍 Estabelecimento de Saúde
+        </label>
+        <select id="unidade" name="unidade_id" required
+          class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+          <option value="">Selecione a unidade de saúde...</option>
+        </select>
+        <p id="erro-unidade" class="text-red-500 text-xs mt-1 hidden">Selecione uma unidade de saúde.</p>
+      </div>
+
+      <!-- Perguntas de Avaliação -->
+      <div class="bg-white rounded-xl shadow-sm p-5 mb-4">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">📋 Avalie o atendimento</h2>
+
+        <!-- Acesso -->
+        <div class="pergunta mb-6" data-campo="acesso">
+          <p class="text-sm text-gray-700 font-medium mb-3">
+            1. Você ficou satisfeito(a) com a <strong>facilidade para falar ou ser atendido(a)</strong> pela sua equipe quando precisou?
+          </p>
+          <div class="escala-satisfacao flex flex-wrap gap-2">
+            <label class="opcao-radio">
+              <input type="radio" name="acesso" value="1" class="hidden">
+              <span class="opcao-btn">😠<span class="opcao-texto">Muito insatisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="acesso" value="2" class="hidden">
+              <span class="opcao-btn">😟<span class="opcao-texto">Insatisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="acesso" value="3" class="hidden">
+              <span class="opcao-btn">😐<span class="opcao-texto">Neutro</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="acesso" value="4" class="hidden">
+              <span class="opcao-btn">😊<span class="opcao-texto">Satisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="acesso" value="5" class="hidden">
+              <span class="opcao-btn">😁<span class="opcao-texto">Muito satisfeito</span></span>
+            </label>
+          </div>
+          <p class="erro-campo text-red-500 text-xs mt-1 hidden">Selecione uma opção.</p>
+        </div>
+
+        <!-- Integralidade -->
+        <div class="pergunta mb-6" data-campo="integralidade">
+          <p class="text-sm text-gray-700 font-medium mb-3">
+            2. Você ficou satisfeito(a) com as <strong>orientações da equipe sobre como cuidar da sua saúde</strong>?
+          </p>
+          <div class="escala-satisfacao flex flex-wrap gap-2">
+            <label class="opcao-radio">
+              <input type="radio" name="integralidade" value="1" class="hidden">
+              <span class="opcao-btn">😠<span class="opcao-texto">Muito insatisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="integralidade" value="2" class="hidden">
+              <span class="opcao-btn">😟<span class="opcao-texto">Insatisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="integralidade" value="3" class="hidden">
+              <span class="opcao-btn">😐<span class="opcao-texto">Neutro</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="integralidade" value="4" class="hidden">
+              <span class="opcao-btn">😊<span class="opcao-texto">Satisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="integralidade" value="5" class="hidden">
+              <span class="opcao-btn">😁<span class="opcao-texto">Muito satisfeito</span></span>
+            </label>
+          </div>
+          <p class="erro-campo text-red-500 text-xs mt-1 hidden">Selecione uma opção.</p>
+        </div>
+
+        <!-- Longitudinalidade -->
+        <div class="pergunta mb-6" data-campo="longitudinalidade">
+          <p class="text-sm text-gray-700 font-medium mb-3">
+            3. Você ficou satisfeito(a) com a <strong>confiança para conversar com a equipe</strong> sobre sua vida e sua saúde?
+          </p>
+          <div class="escala-satisfacao flex flex-wrap gap-2">
+            <label class="opcao-radio">
+              <input type="radio" name="longitudinalidade" value="1" class="hidden">
+              <span class="opcao-btn">😠<span class="opcao-texto">Muito insatisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="longitudinalidade" value="2" class="hidden">
+              <span class="opcao-btn">😟<span class="opcao-texto">Insatisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="longitudinalidade" value="3" class="hidden">
+              <span class="opcao-btn">😐<span class="opcao-texto">Neutro</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="longitudinalidade" value="4" class="hidden">
+              <span class="opcao-btn">😊<span class="opcao-texto">Satisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="longitudinalidade" value="5" class="hidden">
+              <span class="opcao-btn">😁<span class="opcao-texto">Muito satisfeito</span></span>
+            </label>
+          </div>
+          <p class="erro-campo text-red-500 text-xs mt-1 hidden">Selecione uma opção.</p>
+        </div>
+
+        <!-- Receptividade -->
+        <div class="pergunta mb-6" data-campo="receptividade">
+          <p class="text-sm text-gray-700 font-medium mb-3">
+            4. Você ficou satisfeito(a) com a <strong>forma como foi recebido(a)</strong> na unidade de saúde?
+          </p>
+          <div class="escala-satisfacao flex flex-wrap gap-2">
+            <label class="opcao-radio">
+              <input type="radio" name="receptividade" value="1" class="hidden">
+              <span class="opcao-btn">😠<span class="opcao-texto">Muito insatisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="receptividade" value="2" class="hidden">
+              <span class="opcao-btn">😟<span class="opcao-texto">Insatisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="receptividade" value="3" class="hidden">
+              <span class="opcao-btn">😐<span class="opcao-texto">Neutro</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="receptividade" value="4" class="hidden">
+              <span class="opcao-btn">😊<span class="opcao-texto">Satisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="receptividade" value="5" class="hidden">
+              <span class="opcao-btn">😁<span class="opcao-texto">Muito satisfeito</span></span>
+            </label>
+          </div>
+          <p class="erro-campo text-red-500 text-xs mt-1 hidden">Selecione uma opção.</p>
+        </div>
+
+        <!-- Atendimento -->
+        <div class="pergunta mb-2" data-campo="atendimento">
+          <p class="text-sm text-gray-700 font-medium mb-3">
+            5. De forma geral, você ficou satisfeito(a) com o <strong>atendimento nesta unidade de saúde</strong>?
+          </p>
+          <div class="escala-satisfacao flex flex-wrap gap-2">
+            <label class="opcao-radio">
+              <input type="radio" name="atendimento" value="1" class="hidden">
+              <span class="opcao-btn">😠<span class="opcao-texto">Muito insatisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="atendimento" value="2" class="hidden">
+              <span class="opcao-btn">😟<span class="opcao-texto">Insatisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="atendimento" value="3" class="hidden">
+              <span class="opcao-btn">😐<span class="opcao-texto">Neutro</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="atendimento" value="4" class="hidden">
+              <span class="opcao-btn">😊<span class="opcao-texto">Satisfeito</span></span>
+            </label>
+            <label class="opcao-radio">
+              <input type="radio" name="atendimento" value="5" class="hidden">
+              <span class="opcao-btn">😁<span class="opcao-texto">Muito satisfeito</span></span>
+            </label>
+          </div>
+          <p class="erro-campo text-red-500 text-xs mt-1 hidden">Selecione uma opção.</p>
+        </div>
+      </div>
+
+      <!-- Comentário -->
+      <div class="bg-white rounded-xl shadow-sm p-5 mb-4">
+        <label for="comentario" class="block text-sm font-semibold text-gray-700 mb-2">
+          💬 Deixe um comentário ou sugestão (opcional)
+        </label>
+        <textarea id="comentario" name="comentario" rows="3" maxlength="1000"
+          placeholder="Escreva aqui sua opinião..."
+          class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+        <p class="text-gray-400 text-xs text-right mt-1"><span id="char-count">0</span>/1000</p>
+      </div>
+
+      <!-- Botão Enviar -->
+      <div class="text-center mb-8">
+        <button type="submit" id="btn-enviar"
+          class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-10 rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-blue-300">
+          Enviar avaliação
+        </button>
+      </div>
+    </form>
+
+    <!-- Mensagem de Sucesso -->
+    <div id="mensagem-sucesso" class="hidden text-center bg-green-50 border border-green-200 rounded-xl p-6 mb-8">
+      <div class="text-5xl mb-3">✅</div>
+      <h3 class="text-lg font-semibold text-green-800">Obrigado!</h3>
+      <p class="text-green-700 text-sm mt-1">Sua avaliação ajuda a melhorar os serviços de saúde.</p>
+      <button type="button" id="btn-nova-avaliacao"
+        class="mt-4 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition">
+        Nova avaliação
+      </button>
+    </div>
+
+    <!-- Mensagem de Erro -->
+    <div id="mensagem-erro" class="hidden text-center bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
+      <p class="text-red-700 text-sm" id="texto-erro"></p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center text-gray-400 text-xs py-6">
+    <p>Secretaria Municipal de Saúde &copy; 2026</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

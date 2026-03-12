@@ -1,0 +1,117 @@
+/* Botões de opção de satisfação */
+.opcao-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  min-width: 80px;
+  text-align: center;
+  background: #fafafa;
+}
+
+.opcao-btn:hover {
+  border-color: #93c5fd;
+  background: #eff6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.opcao-btn span.opcao-texto {
+  font-size: 0.65rem;
+  color: #6b7280;
+  line-height: 1.2;
+}
+
+/* Estado selecionado */
+input[type="radio"]:checked + .opcao-btn {
+  border-color: #3b82f6;
+  background: #dbeafe;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+input[type="radio"]:checked + .opcao-btn .opcao-texto {
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+/* Tamanho do emoji */
+.opcao-btn::first-line {
+  font-size: 1.5rem;
+}
+
+/* Escala responsiva */
+.escala-satisfacao {
+  display: flex;
+  justify-content: center;
+}
+
+/* Loading spinner do botão */
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  margin-top: -9px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Animação de entrada da mensagem de sucesso */
+#mensagem-sucesso:not(.hidden) {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Borda de erro no pergunta */
+.pergunta.erro .escala-satisfacao {
+  border: 1px solid #fca5a5;
+  border-radius: 12px;
+  padding: 4px;
+}
+
+/* Mobile ajustes */
+@media (max-width: 480px) {
+  .escala-satisfacao {
+    gap: 6px;
+  }
+
+  .opcao-btn {
+    min-width: 56px;
+    padding: 8px 6px;
+    font-size: 1.25rem;
+  }
+
+  .opcao-btn span.opcao-texto {
+    font-size: 0.55rem;
+  }
+}
