@@ -13,7 +13,7 @@ async function equipesRoutes(fastify) {
     }
 
     const result = await pool.query(
-      `SELECT id, nome, cor, tipo
+      `SELECT id, nome, cor, cor_label, tipo
        FROM equipes
        WHERE unidade_id = $1 AND status = 'ativo'
        ORDER BY nome`,

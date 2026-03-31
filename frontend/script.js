@@ -3,7 +3,10 @@ const API_URL = window.location.origin;
 const form = document.getElementById('form-avaliacao');
 const selectUnidade = document.getElementById('unidade');
 const selectEquipe = document.getElementById('equipe');
-const equipePreview = document.getElementById('equipe-preview');
+const equipeCorWrap = document.getElementById('equipe-cor-wrap');
+const equipeSwatch = document.getElementById('equipe-swatch');
+const equipeCorTexto = document.getElementById('equipe-cor-texto');
+const equipeContagem = document.getElementById('equipe-contagem');
 const comentario = document.getElementById('comentario');
 const charCount = document.getElementById('char-count');
 const btnEnviar = document.getElementById('btn-enviar');
@@ -19,27 +22,55 @@ function resetEquipeSelect() {
   selectEquipe.disabled = true;
   selectEquipe.value = '';
   selectEquipe.classList.remove('border-red-400');
-  equipePreview.classList.add('hidden');
-  equipePreview.style.backgroundColor = '';
-  selectEquipe.style.borderColor = '';
+  equipeCorWrap.classList.add('hidden');
+  equipeSwatch.style.backgroundColor = '';
+  equipeCorTexto.textContent = '';
   selectEquipe.style.boxShadow = '';
+  selectEquipe.style.borderColor = '';
+  if (equipeContagem) {
+    equipeContagem.textContent = '';
+    equipeContagem.classList.add('hidden');
+  }
+}
+
+function sombraCorHex(hex, alpha) {
+  if (!hex || !/^#[0-9A-Fa-f]{6}$/.test(hex)) return 'none';
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `0 0 0 3px rgba(${r},${g},${b},${alpha})`;
+}
+
+function textoCorEquipe(opt) {
+  const label = (opt.dataset.corLabel || '').trim();
+  if (label) return label;
+  const hex = (opt.dataset.cor || '').trim();
+  return hex || '—';
 }
 
 function aplicarEstiloEquipeSelecionada() {
   const opt = selectEquipe.selectedOptions[0];
   if (!opt || !opt.value || !opt.dataset.cor) {
-    equipePreview.classList.add('hidden');
-    equipePreview.style.backgroundColor = '';
-    selectEquipe.style.borderColor = '';
+    equipeCorWrap.classList.add('hidden');
+    equipeSwatch.style.backgroundColor = '';
+    equipeCorTexto.textContent = '';
     selectEquipe.style.boxShadow = '';
+    selectEquipe.style.borderColor = '';
     return;
   }
   const cor = opt.dataset.cor;
-  equipePreview.style.backgroundColor = cor;
-  equipePreview.style.boxShadow = `inset 0 0 0 1px rgba(0,0,0,0.08)`;
-  equipePreview.classList.remove('hidden');
-  selectEquipe.style.borderColor = cor;
-  selectEquipe.style.boxShadow = `0 0 0 3px ${cor}40`;
+  equipeSwatch.style.backgroundColor = cor;
+  equipeCorTexto.textContent = textoCorEquipe(opt);
+  equipeCorWrap.classList.remove('hidden');
+  selectEquipe.style.boxShadow = sombraCorHex(cor, 0.22);
+  selectEquipe.style.borderColor = '#d1d5db';
+}
+
+function rotuloOpcaoEquipe(e) {
+  const nome = (e.nome || '').trim();
+  const rotuloCor = (e.cor_label && String(e.cor_label).trim()) || (e.cor && String(e.cor).trim()) || '';
+  if (!rotuloCor) return nome;
+  return `${nome} (${rotuloCor})`;
 }
 
 async function carregarUnidades() {
@@ -75,13 +106,18 @@ async function carregarEquipes(unidadeId) {
     equipes.forEach((e) => {
       const option = document.createElement('option');
       option.value = e.id;
-      option.dataset.cor = e.cor;
-      option.textContent = `${e.nome} (${e.cor})`;
-      option.style.backgroundColor = e.cor;
-      option.style.color = '#ffffff';
+      option.dataset.cor = e.cor || '';
+      option.dataset.corLabel = e.cor_label != null ? String(e.cor_label) : '';
+      option.textContent = rotuloOpcaoEquipe(e);
       selectEquipe.appendChild(option);
     });
     selectEquipe.disabled = false;
+    if (equipeContagem) {
+      const n = equipes.length;
+      equipeContagem.textContent =
+        n > 0 ? `${n} equipe${n === 1 ? '' : 's'} ativa${n === 1 ? '' : 's'} nesta unidade` : '';
+      equipeContagem.classList.toggle('hidden', n === 0);
+    }
   } catch (err) {
     selectEquipe.innerHTML = '<option value="">Não foi possível carregar as equipes</option>';
     mostrarErro('Não foi possível carregar as equipes de saúde. Verifique sua conexão.');
