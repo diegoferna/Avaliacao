@@ -3,9 +3,10 @@ const API_URL = window.location.origin;
 const form = document.getElementById('form-avaliacao');
 const selectUnidade = document.getElementById('unidade');
 const selectEquipe = document.getElementById('equipe');
-const equipeCorWrap = document.getElementById('equipe-cor-wrap');
-const equipeSwatch = document.getElementById('equipe-swatch');
-const equipeCorTexto = document.getElementById('equipe-cor-texto');
+const equipeWrap = document.getElementById('equipe-wrap');
+const equipeTrigger = document.getElementById('equipe-trigger');
+const equipeTriggerLabel = document.getElementById('equipe-trigger-label');
+const equipePanel = document.getElementById('equipe-panel');
 const equipeContagem = document.getElementById('equipe-contagem');
 const comentario = document.getElementById('comentario');
 const charCount = document.getElementById('char-count');
@@ -17,53 +18,24 @@ const btnNovaAvaliacao = document.getElementById('btn-nova-avaliacao');
 
 const campos = ['acesso', 'integralidade', 'longitudinalidade', 'receptividade', 'atendimento'];
 
-function resetEquipeSelect() {
-  selectEquipe.innerHTML = '<option value="">Selecione primeiro o estabelecimento...</option>';
-  selectEquipe.disabled = true;
-  selectEquipe.value = '';
-  selectEquipe.classList.remove('border-red-400');
-  equipeCorWrap.classList.add('hidden');
-  equipeSwatch.style.backgroundColor = '';
-  equipeCorTexto.textContent = '';
-  selectEquipe.style.boxShadow = '';
-  selectEquipe.style.borderColor = '';
-  if (equipeContagem) {
-    equipeContagem.textContent = '';
-    equipeContagem.classList.add('hidden');
-  }
-}
+/** Lista: fundo com cor identificável. Hover: mais saturado (mesma cor da equipe; CSS evita hover azul do SO). */
+const TINT_LISTA = 0.38;
+const TINT_HOVER = 0.58;
+const TINT_TRIGGER = 0.32;
 
-function sombraCorHex(hex, alpha) {
-  if (!hex || !/^#[0-9A-Fa-f]{6}$/.test(hex)) return 'none';
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `0 0 0 3px rgba(${r},${g},${b},${alpha})`;
-}
+const COR_TEXTO_EQUIPES = '#374151';
 
-function textoCorEquipe(opt) {
-  const label = (opt.dataset.corLabel || '').trim();
-  if (label) return label;
-  const hex = (opt.dataset.cor || '').trim();
-  return hex || '—';
-}
-
-function aplicarEstiloEquipeSelecionada() {
-  const opt = selectEquipe.selectedOptions[0];
-  if (!opt || !opt.value || !opt.dataset.cor) {
-    equipeCorWrap.classList.add('hidden');
-    equipeSwatch.style.backgroundColor = '';
-    equipeCorTexto.textContent = '';
-    selectEquipe.style.boxShadow = '';
-    selectEquipe.style.borderColor = '';
-    return;
-  }
-  const cor = opt.dataset.cor;
-  equipeSwatch.style.backgroundColor = cor;
-  equipeCorTexto.textContent = textoCorEquipe(opt);
-  equipeCorWrap.classList.remove('hidden');
-  selectEquipe.style.boxShadow = sombraCorHex(cor, 0.22);
-  selectEquipe.style.borderColor = '#d1d5db';
+function misturarComBranco(hex, intensidade) {
+  if (!hex || !/^#[0-9A-Fa-f]{6}$/i.test(hex)) return '#f9fafb';
+  const h = hex.replace('#', '');
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  const t = Math.min(1, Math.max(0, intensidade));
+  const r2 = Math.round(255 * (1 - t) + r * t);
+  const g2 = Math.round(255 * (1 - t) + g * t);
+  const b2 = Math.round(255 * (1 - t) + b * t);
+  return `rgb(${r2},${g2},${b2})`;
 }
 
 function rotuloOpcaoEquipe(e) {
@@ -71,6 +43,132 @@ function rotuloOpcaoEquipe(e) {
   const rotuloCor = (e.cor_label && String(e.cor_label).trim()) || (e.cor && String(e.cor).trim()) || '';
   if (!rotuloCor) return nome;
   return `${nome} (${rotuloCor})`;
+}
+
+function limparTriggerEquipe() {
+  if (!equipeTrigger) return;
+  equipeTrigger.style.backgroundColor = '';
+  equipeTrigger.style.color = '';
+  equipeTrigger.style.borderColor = '';
+  equipeTrigger.style.borderLeft = '';
+}
+
+function atualizarTriggerEquipe() {
+  if (!equipeTrigger || !equipeTriggerLabel) return;
+  const opt = selectEquipe.selectedOptions[0];
+  if (!opt || !opt.value) {
+    limparTriggerEquipe();
+    if (selectEquipe.disabled) {
+      equipeTriggerLabel.textContent = 'Selecione primeiro o estabelecimento...';
+    } else {
+      equipeTriggerLabel.textContent = 'Selecione a equipe de saúde...';
+    }
+    equipeTriggerLabel.classList.add('text-gray-500');
+    return;
+  }
+  const cor = opt.dataset.cor;
+  equipeTriggerLabel.textContent = opt.textContent || '';
+  equipeTriggerLabel.classList.remove('text-gray-500');
+  if (cor && /^#[0-9A-Fa-f]{6}$/i.test(cor)) {
+    equipeTrigger.style.backgroundColor = misturarComBranco(cor, TINT_TRIGGER);
+    equipeTrigger.style.color = COR_TEXTO_EQUIPES;
+    equipeTrigger.style.borderColor = '#e5e7eb';
+    equipeTrigger.style.borderLeft = `4px solid ${cor}`;
+  } else {
+    limparTriggerEquipe();
+  }
+}
+
+function painelEquipeAberto() {
+  return equipePanel && !equipePanel.classList.contains('hidden');
+}
+
+function fecharPainelEquipe() {
+  if (!equipePanel || !equipeTrigger) return;
+  equipePanel.classList.add('hidden');
+  equipeWrap.classList.remove('equipe-open');
+  equipeTrigger.setAttribute('aria-expanded', 'false');
+}
+
+function abrirPainelEquipe() {
+  if (!equipePanel || !equipeTrigger || equipeTrigger.disabled) return;
+  equipePanel.classList.remove('hidden');
+  equipeWrap.classList.add('equipe-open');
+  equipeTrigger.setAttribute('aria-expanded', 'true');
+}
+
+function togglePainelEquipe() {
+  if (painelEquipeAberto()) fecharPainelEquipe();
+  else abrirPainelEquipe();
+}
+
+function renderizarPainelEquipes(equipes) {
+  if (!equipePanel) return;
+  equipePanel.innerHTML = '';
+  equipes.forEach((e) => {
+    const hex = (e.cor || '').trim();
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.setAttribute('role', 'option');
+    btn.className = 'equipe-item w-full text-left px-4 py-2.5 text-sm border-0 border-b border-gray-100 last:border-b-0';
+    btn.textContent = rotuloOpcaoEquipe(e);
+    if (/^#[0-9A-Fa-f]{6}$/i.test(hex)) {
+      btn.style.setProperty('--equipe-bg', misturarComBranco(hex, TINT_LISTA));
+      btn.style.setProperty('--equipe-bg-hover', misturarComBranco(hex, TINT_HOVER));
+      btn.style.color = COR_TEXTO_EQUIPES;
+    } else {
+      btn.style.setProperty('--equipe-bg', '#f9fafb');
+      btn.style.setProperty('--equipe-bg-hover', '#f3f4f6');
+      btn.style.color = COR_TEXTO_EQUIPES;
+    }
+    btn.addEventListener('click', () => {
+      selectEquipe.value = String(e.id);
+      selectEquipe.dispatchEvent(new Event('change', { bubbles: true }));
+      fecharPainelEquipe();
+    });
+    equipePanel.appendChild(btn);
+  });
+}
+
+document.addEventListener('click', (ev) => {
+  if (!equipeWrap || !painelEquipeAberto()) return;
+  if (!equipeWrap.contains(ev.target)) fecharPainelEquipe();
+});
+
+document.addEventListener('keydown', (ev) => {
+  if (ev.key === 'Escape' && painelEquipeAberto()) {
+    fecharPainelEquipe();
+  }
+});
+
+if (equipeTrigger) {
+  equipeTrigger.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    if (equipeTrigger.disabled) return;
+    togglePainelEquipe();
+  });
+}
+
+function resetEquipeSelect() {
+  selectEquipe.innerHTML = '<option value="">Selecione primeiro o estabelecimento...</option>';
+  selectEquipe.disabled = true;
+  selectEquipe.value = '';
+  selectEquipe.classList.remove('border-red-400');
+  if (equipeTrigger) {
+    equipeTrigger.disabled = true;
+    equipeTrigger.classList.remove('border-red-400');
+  }
+  if (equipePanel) equipePanel.innerHTML = '';
+  fecharPainelEquipe();
+  limparTriggerEquipe();
+  if (equipeTriggerLabel) {
+    equipeTriggerLabel.textContent = 'Selecione primeiro o estabelecimento...';
+    equipeTriggerLabel.classList.add('text-gray-500');
+  }
+  if (equipeContagem) {
+    equipeContagem.textContent = '';
+    equipeContagem.classList.add('hidden');
+  }
 }
 
 async function carregarUnidades() {
@@ -95,14 +193,21 @@ async function carregarEquipes(unidadeId) {
   if (!unidadeId) return;
 
   selectEquipe.disabled = true;
-  selectEquipe.innerHTML = '<option value="">Carregando equipes...</option>';
+  if (equipeTrigger) equipeTrigger.disabled = true;
+  if (equipeTriggerLabel) equipeTriggerLabel.textContent = 'Carregando equipes...';
 
   try {
     const resp = await fetch(`${API_URL}/equipes?unidade_id=${encodeURIComponent(unidadeId)}`);
     if (!resp.ok) throw new Error('Erro ao carregar equipes');
     const equipes = await resp.json();
 
-    selectEquipe.innerHTML = '<option value="">Selecione a equipe de saúde...</option>';
+    selectEquipe.innerHTML = '';
+
+    const optPlaceholder = document.createElement('option');
+    optPlaceholder.value = '';
+    optPlaceholder.textContent = 'Selecione a equipe de saúde...';
+    selectEquipe.appendChild(optPlaceholder);
+
     equipes.forEach((e) => {
       const option = document.createElement('option');
       option.value = e.id;
@@ -111,15 +216,33 @@ async function carregarEquipes(unidadeId) {
       option.textContent = rotuloOpcaoEquipe(e);
       selectEquipe.appendChild(option);
     });
+
+    renderizarPainelEquipes(equipes);
+
     selectEquipe.disabled = false;
+    if (equipeTrigger) equipeTrigger.disabled = false;
+    if (equipeTriggerLabel) {
+      equipeTriggerLabel.textContent = 'Selecione a equipe de saúde...';
+      equipeTriggerLabel.classList.add('text-gray-500');
+    }
+
     if (equipeContagem) {
       const n = equipes.length;
       equipeContagem.textContent =
         n > 0 ? `${n} equipe${n === 1 ? '' : 's'} ativa${n === 1 ? '' : 's'} nesta unidade` : '';
       equipeContagem.classList.toggle('hidden', n === 0);
     }
+    atualizarTriggerEquipe();
   } catch (err) {
-    selectEquipe.innerHTML = '<option value="">Não foi possível carregar as equipes</option>';
+    selectEquipe.innerHTML = '';
+    const optErr = document.createElement('option');
+    optErr.value = '';
+    optErr.textContent = 'Não foi possível carregar as equipes';
+    selectEquipe.appendChild(optErr);
+    selectEquipe.disabled = true;
+    if (equipePanel) equipePanel.innerHTML = '';
+    if (equipeTrigger) equipeTrigger.disabled = true;
+    if (equipeTriggerLabel) equipeTriggerLabel.textContent = 'Erro ao carregar equipes';
     mostrarErro('Não foi possível carregar as equipes de saúde. Verifique sua conexão.');
   }
 }
@@ -145,10 +268,12 @@ function validarFormulario() {
   if (!selectEquipe.value || selectEquipe.disabled) {
     erroEquipe.classList.remove('hidden');
     selectEquipe.classList.add('border-red-400');
+    if (equipeTrigger) equipeTrigger.classList.add('border-red-400');
     valido = false;
   } else {
     erroEquipe.classList.add('hidden');
     selectEquipe.classList.remove('border-red-400');
+    if (equipeTrigger) equipeTrigger.classList.remove('border-red-400');
   }
 
   campos.forEach((campo) => {
@@ -179,7 +304,8 @@ selectUnidade.addEventListener('change', () => {
 selectEquipe.addEventListener('change', () => {
   document.getElementById('erro-equipe').classList.add('hidden');
   selectEquipe.classList.remove('border-red-400');
-  aplicarEstiloEquipeSelecionada();
+  if (equipeTrigger) equipeTrigger.classList.remove('border-red-400');
+  atualizarTriggerEquipe();
 });
 
 campos.forEach((campo) => {

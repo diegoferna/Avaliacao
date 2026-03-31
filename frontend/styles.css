@@ -99,18 +99,31 @@ input[type="radio"]:checked + .opcao-btn .opcao-texto {
   padding: 4px;
 }
 
-/* Equipe: amostra de cor alinhada ao layout (sem “arco-íris” nas <option>) */
-.equipe-swatch {
-  width: 1rem;
-  height: 1rem;
-  border-radius: 9999px;
-  border: 2px solid #fff;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-  background-color: #e5e7eb;
+/* Dropdown customizado de equipes: lista com cor da equipe + hover na mesma paleta */
+.equipe-item {
+  background-color: var(--equipe-bg, #f9fafb);
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 
-#equipe-cor-wrap {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+.equipe-item:hover,
+.equipe-item:focus {
+  background-color: var(--equipe-bg-hover, #f3f4f6) !important;
+  outline: none;
+}
+
+#equipe-wrap.equipe-open .equipe-trigger-chevron {
+  transform: rotate(-180deg);
+}
+
+.equipe-trigger-chevron {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.equipe-trigger {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 /* Mobile ajustes */
