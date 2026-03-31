@@ -7,11 +7,14 @@
  * - O portal usa apenas GET /unidades e GET /equipes, que retornam somente registros
  *   com status = 'ativo'. Os inativos ficam no banco para relatórios e expansão futura.
  *
+ * Arquivo padrão (se não passar argumento nem EAS_EXCEL_PATH):
+ *   backend/database/EAS E EQUIPES.xlsx
+ *
  * Uso:
  *   npm run seed:eas
- *   npm run seed:eas -- "C:\\caminho\\EAS E EQUIPES.xlsx"
+ *   npm run seed:eas -- "C:\\outro\\caminho\\EAS E EQUIPES.xlsx"
  *
- * Variável de ambiente (opcional):
+ * Variável de ambiente (opcional, sobrescreve o padrão):
  *   EAS_EXCEL_PATH=caminho/para/EAS E EQUIPES.xlsx
  *
  * Requer: migration 003 aplicada; dependências xlsx e dotenv instaladas.
@@ -88,11 +91,19 @@ function inferirTipoEquipe(desc) {
   return 'Outro';
 }
 
+/** Padrão: planilha versionada em backend/database/EAS E EQUIPES.xlsx */
+const CAMINHO_EXCEL_PADRAO = path.join(
+  __dirname,
+  '..',
+  'database',
+  'EAS E EQUIPES.xlsx'
+);
+
 function resolverCaminhoExcel() {
   const arg = process.argv[2];
   if (arg && !arg.startsWith('-')) return path.resolve(arg);
   if (process.env.EAS_EXCEL_PATH) return path.resolve(process.env.EAS_EXCEL_PATH);
-  return '';
+  return CAMINHO_EXCEL_PADRAO;
 }
 
 function normalizarNomeAba(s) {
@@ -246,10 +257,10 @@ async function upsertEquipes(client, equipes, cnesToId) {
 
 async function main() {
   const caminho = resolverCaminhoExcel();
-  if (!caminho) {
+  if (!fs.existsSync(caminho)) {
     console.error(
-      'Informe o caminho do Excel: variável EAS_EXCEL_PATH ou argumento:\n' +
-        '  npm run seed:eas -- "C:\\\\caminho\\\\EAS E EQUIPES.xlsx"'
+      `Arquivo não encontrado: ${caminho}\n` +
+        'Coloque "EAS E EQUIPES.xlsx" em backend/database/ ou defina EAS_EXCEL_PATH / passo o caminho como argumento.'
     );
     process.exit(1);
   }
