@@ -1,6 +1,7 @@
 const pool = require('../database/connection');
 
 async function equipesRoutes(fastify) {
+  // Equipes ativas da unidade selecionada (portal). Inativas ficam só no banco.
   fastify.get('/equipes', async (request, reply) => {
     const unidadeId = request.query.unidade_id;
     if (unidadeId === undefined || unidadeId === null || String(unidadeId).trim() === '') {
