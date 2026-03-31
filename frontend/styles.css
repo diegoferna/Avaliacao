@@ -99,6 +99,11 @@ input[type="radio"]:checked + .opcao-btn .opcao-texto {
   padding: 4px;
 }
 
+/* Equipe de saúde: opções com cor (navegadores variam no <option>) */
+.select-equipe option {
+  padding: 0.5rem;
+}
+
 /* Mobile ajustes */
 @media (max-width: 480px) {
   .escala-satisfacao {

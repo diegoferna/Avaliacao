@@ -1,37 +1,76 @@
 const pool = require('../database/connection');
 
 async function avaliacoesRoutes(fastify) {
-  // POST /avaliacoes - Salvar uma avaliação
   fastify.post('/avaliacoes', {
     schema: {
       body: {
         type: 'object',
-        required: ['unidade_id', 'acesso', 'integralidade', 'longitudinalidade', 'receptividade', 'atendimento'],
+        required: [
+          'unidade_id',
+          'equipe_id',
+          'acesso',
+          'integralidade',
+          'longitudinalidade',
+          'receptividade',
+          'atendimento',
+        ],
         properties: {
           unidade_id: { type: 'integer', minimum: 1 },
+          equipe_id: { type: 'integer', minimum: 1 },
           acesso: { type: 'integer', minimum: 1, maximum: 5 },
           integralidade: { type: 'integer', minimum: 1, maximum: 5 },
           longitudinalidade: { type: 'integer', minimum: 1, maximum: 5 },
           receptividade: { type: 'integer', minimum: 1, maximum: 5 },
           atendimento: { type: 'integer', minimum: 1, maximum: 5 },
-          comentario: { type: 'string', maxLength: 1000 },
+          comentario: { type: 'string', maxLength: 500 },
         },
       },
     },
   }, async (request, reply) => {
-    const { unidade_id, acesso, integralidade, longitudinalidade, receptividade, atendimento, comentario } = request.body;
+    const {
+      unidade_id,
+      equipe_id,
+      acesso,
+      integralidade,
+      longitudinalidade,
+      receptividade,
+      atendimento,
+      comentario,
+    } = request.body;
 
-    // Verificar se a unidade existe
-    const unidade = await pool.query('SELECT id FROM unidades WHERE id = $1', [unidade_id]);
+    const unidade = await pool.query(
+      'SELECT id FROM unidades WHERE id = $1 AND status = $2',
+      [unidade_id, 'ativo']
+    );
     if (unidade.rows.length === 0) {
-      return reply.status(400).send({ error: 'Unidade de saúde não encontrada.' });
+      return reply.status(400).send({ error: 'Estabelecimento de saúde não encontrado ou inativo.' });
+    }
+
+    const equipe = await pool.query(
+      `SELECT id FROM equipes
+       WHERE id = $1 AND unidade_id = $2 AND status = $3`,
+      [equipe_id, unidade_id, 'ativo']
+    );
+    if (equipe.rows.length === 0) {
+      return reply.status(400).send({ error: 'Equipe de saúde não encontrada ou não pertence ao estabelecimento selecionado.' });
     }
 
     const result = await pool.query(
-      `INSERT INTO avaliacoes (unidade_id, acesso, integralidade, longitudinalidade, receptividade, atendimento, comentario)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `INSERT INTO avaliacoes (
+        unidade_id, equipe_id, acesso, integralidade, longitudinalidade, receptividade, atendimento, comentario
+      )
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING id, created_at`,
-      [unidade_id, acesso, integralidade, longitudinalidade, receptividade, atendimento, comentario || null]
+      [
+        unidade_id,
+        equipe_id,
+        acesso,
+        integralidade,
+        longitudinalidade,
+        receptividade,
+        atendimento,
+        comentario || null,
+      ]
     );
 
     return reply.status(201).send({
@@ -41,7 +80,6 @@ async function avaliacoesRoutes(fastify) {
     });
   });
 
-  // GET /avaliacoes/resumo - Média das avaliações por unidade
   fastify.get('/avaliacoes/resumo', async (request, reply) => {
     const result = await pool.query(`
       SELECT
@@ -50,14 +88,20 @@ async function avaliacoesRoutes(fastify) {
         u.distrito,
         u.tipo,
         COUNT(a.id)::integer AS total_avaliacoes,
-        ROUND(AVG(a.acesso), 2)::float AS media_acesso,
-        ROUND(AVG(a.integralidade), 2)::float AS media_integralidade,
-        ROUND(AVG(a.longitudinalidade), 2)::float AS media_longitudinalidade,
-        ROUND(AVG(a.receptividade), 2)::float AS media_receptividade,
-        ROUND(AVG(a.atendimento), 2)::float AS media_atendimento,
+        ROUND(AVG((a.acesso - 1) * 2.5), 2)::float AS media_acesso_pontos,
+        ROUND(AVG((a.integralidade - 1) * 2.5), 2)::float AS media_integralidade_pontos,
+        ROUND(AVG((a.longitudinalidade - 1) * 2.5), 2)::float AS media_longitudinalidade_pontos,
+        ROUND(AVG((a.receptividade - 1) * 2.5), 2)::float AS media_receptividade_pontos,
+        ROUND(AVG((a.atendimento - 1) * 2.5), 2)::float AS media_atendimento_pontos,
         ROUND(
-          (AVG(a.acesso) + AVG(a.integralidade) + AVG(a.longitudinalidade) + AVG(a.receptividade) + AVG(a.atendimento)) / 5
-        , 2)::float AS media_geral
+          (
+            AVG((a.acesso - 1) * 2.5) +
+            AVG((a.integralidade - 1) * 2.5) +
+            AVG((a.longitudinalidade - 1) * 2.5) +
+            AVG((a.receptividade - 1) * 2.5) +
+            AVG((a.atendimento - 1) * 2.5)
+          ) / 5
+        , 2)::float AS media_geral_pontos
       FROM unidades u
       LEFT JOIN avaliacoes a ON u.id = a.unidade_id
       GROUP BY u.id, u.nome, u.distrito, u.tipo

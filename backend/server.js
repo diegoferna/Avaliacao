@@ -14,6 +14,7 @@ fastify.register(require('@fastify/static'), {
 
 // Registrar rotas
 fastify.register(require('./routes/unidades'));
+fastify.register(require('./routes/equipes'));
 fastify.register(require('./routes/avaliacoes'));
 
 // Tratamento global de erros
