@@ -40,7 +40,7 @@ async function avaliacoesRoutes(fastify) {
 
     const unidade = await pool.query(
       'SELECT id FROM unidades WHERE id = $1 AND status = $2',
-      [unidade_id, 'ativo']
+      [unidade_id, 1]
     );
     if (unidade.rows.length === 0) {
       return reply.status(400).send({ error: 'Estabelecimento de saúde não encontrado ou inativo.' });
@@ -49,7 +49,7 @@ async function avaliacoesRoutes(fastify) {
     const equipe = await pool.query(
       `SELECT id FROM equipes
        WHERE id = $1 AND unidade_id = $2 AND status = $3`,
-      [equipe_id, unidade_id, 'ativo']
+      [equipe_id, unidade_id, 1]
     );
     if (equipe.rows.length === 0) {
       return reply.status(400).send({ error: 'Equipe de saúde não encontrada ou não pertence ao estabelecimento selecionado.' });
