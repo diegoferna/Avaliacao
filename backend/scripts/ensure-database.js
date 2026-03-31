@@ -56,11 +56,11 @@ function configConexaoAdmin() {
   }
 
   return {
-    host: process.env.DB_HOST || "localhost",
-    port: parseInt(process.env.DB_PORT || "5432", 10),
-    database: "postgres",
+    host: process.env.DB_HOST || "172.22.16.62",
+    port: parseInt(process.env.DB_PORT || "5433", 10),
+    database: process.env.DB_NAME || "avaliacao_saude",
     user: (process.env.DB_USER || "postgres").trim(),
-    password: String(process.env.DB_PASSWORD || "12345678").trim(),
+    password: String(process.env.DB_PASSWORD || "NE9e6BApdLzR49VIkOiDTya~nX7~a").trim(),
   };
 }
 

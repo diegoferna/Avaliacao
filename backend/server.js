@@ -36,7 +36,7 @@ fastify.setErrorHandler((error, request, reply) => {
 // Iniciar servidor
 const start = async () => {
   try {
-    const port = parseInt(process.env.PORT || '3000');
+    const port = parseInt(process.env.PORT || '3001', 10);
     await fastify.listen({ port, host: '0.0.0.0' });
     console.log(`Servidor rodando em http://localhost:${port}`);
   } catch (err) {

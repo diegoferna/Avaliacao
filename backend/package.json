@@ -7,7 +7,12 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "db:create": "node scripts/ensure-database.js",
-    "seed:eas": "node scripts/seed-eas-equipes.js"
+    "seed:eas": "node scripts/seed-eas-equipes.js",
+    "pm2:start": "pm2 start ecosystem.config.cjs",
+    "pm2:stop": "pm2 stop asu-hm",
+    "pm2:restart": "pm2 restart asu-hm",
+    "pm2:logs": "pm2 logs asu-hm",
+    "pm2:delete": "pm2 delete asu-hm"
   },
   "dependencies": {
     "@fastify/cors": "^11.0.1",
