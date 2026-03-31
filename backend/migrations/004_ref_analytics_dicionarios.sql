@@ -113,7 +113,9 @@ BEGIN
   END IF;
 END $$;
 
-CREATE TABLE IF NOT EXISTS ref_status_entidade (
+-- Sem IF NOT EXISTS: após DROP TABLE acima, recria sempre com SMALLINT.
+-- (IF NOT EXISTS deixaria tabela antiga VARCHAR se já existisse — bug comum.)
+CREATE TABLE ref_status_entidade (
     codigo SMALLINT PRIMARY KEY CHECK (codigo IN (1, 2)),
     rotulo VARCHAR(80) NOT NULL,
     descricao TEXT NOT NULL,
