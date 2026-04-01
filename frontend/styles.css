@@ -526,6 +526,11 @@ input[type="radio"]:checked + .opcao-btn .opcao-texto {
 }
 
 /* --- Dropdown customizado de equipes --- */
+/* Dois .card seguidos têm o mesmo z-index (10); o segundo pintava por cima do painel absoluto. */
+.card:has(#equipe-wrap.equipe-open) {
+  z-index: 40;
+}
+
 .equipe-item {
   background-color: var(--equipe-bg, #f9fafb);
   color: var(--cinza-700);
