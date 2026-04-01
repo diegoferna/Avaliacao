@@ -1,5 +1,32 @@
 const path = require('path');
+const { execSync } = require('child_process');
 const fastify = require('fastify')({ logger: true });
+
+const repoRoot = path.join(__dirname, '..');
+
+function resolveDevPort() {
+  const raw = process.env.PORT;
+  const envPort =
+    raw !== undefined && raw !== '' ? parseInt(raw, 10) : NaN;
+  const hasValidEnvPort = !Number.isNaN(envPort);
+
+  try {
+    const branch = execSync('git branch --show-current', {
+      encoding: 'utf8',
+      cwd: repoRoot,
+    }).trim();
+    if (branch === 'dev' && process.env.NODE_ENV !== 'production') {
+      return 3002;
+    }
+  } catch {
+    // fora do git ou git indisponível
+  }
+
+  if (hasValidEnvPort) {
+    return envPort;
+  }
+  return 3001;
+}
 
 // CORS para permitir requisições do frontend
 fastify.register(require('@fastify/cors'), {
@@ -36,7 +63,7 @@ fastify.setErrorHandler((error, request, reply) => {
 // Iniciar servidor
 const start = async () => {
   try {
-    const port = parseInt(process.env.PORT || '3001', 10);
+    const port = resolveDevPort();
     await fastify.listen({ port, host: '0.0.0.0' });
     console.log(`Servidor rodando em http://localhost:${port}`);
   } catch (err) {
