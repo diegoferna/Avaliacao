@@ -3,7 +3,7 @@
  * Conecta ao banco padrão "postgres" com as mesmas credenciais do .env.
  *
  * Uso: npm run db:create
- * Depois rode as migrations normalmente (psql … -f migrations/001_…).
+ * Depois aplique as migrations em ordem (001…004) ou use `npm run seed:ref` após 001–003 para o dicionário de analytics (004).
  */
 
 const fs = require("fs");

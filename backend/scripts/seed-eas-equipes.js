@@ -5,7 +5,7 @@
  * - Grava TODAS as linhas da planilha (ATIVO e INATIVO), mapeando para as colunas
  *   existentes em `unidades` e `equipes` (CNES, nome, status, INE, cor, tipos, etc.).
  * - O portal usa apenas GET /unidades e GET /equipes, que retornam somente registros
- *   com status = 'ativo'. Os inativos ficam no banco para relatórios e expansão futura.
+ *   com status = 1 (ativo). Inativos = 2; ficam no banco para relatórios e expansão futura.
  *
  * Arquivo padrão (se não passar argumento nem EAS_EXCEL_PATH):
  *   backend/database/EAS E EQUIPES.xlsx
@@ -55,11 +55,12 @@ function normalizarNumeroId(v) {
   return digits || null;
 }
 
+/** 1 = ativo, 2 = inativo (colunas unidades.status / equipes.status após migration 005). */
 function normalizarStatus(v) {
   const s = String(v || '').trim().toUpperCase();
-  if (s === 'ATIVO') return 'ativo';
-  if (s === 'INATIVO') return 'inativo';
-  return s === 'ATIVO' ? 'ativo' : 'inativo';
+  if (s === 'ATIVO') return 1;
+  if (s === 'INATIVO') return 2;
+  return 2;
 }
 
 function corParaHex(label) {

@@ -7,7 +7,7 @@ async function unidadesRoutes(fastify) {
     const result = await pool.query(
       `SELECT id, cnes, nome, distrito, tipo
        FROM unidades
-       WHERE status = 'ativo'
+       WHERE status = 1
        ORDER BY nome`
     );
     return result.rows;

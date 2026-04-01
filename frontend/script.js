@@ -7,7 +7,6 @@ const equipeWrap = document.getElementById('equipe-wrap');
 const equipeTrigger = document.getElementById('equipe-trigger');
 const equipeTriggerLabel = document.getElementById('equipe-trigger-label');
 const equipePanel = document.getElementById('equipe-panel');
-const equipeContagem = document.getElementById('equipe-contagem');
 const comentario = document.getElementById('comentario');
 const charCount = document.getElementById('char-count');
 const btnEnviar = document.getElementById('btn-enviar');
@@ -165,10 +164,6 @@ function resetEquipeSelect() {
     equipeTriggerLabel.textContent = 'Selecione primeiro o estabelecimento...';
     equipeTriggerLabel.classList.add('text-gray-500');
   }
-  if (equipeContagem) {
-    equipeContagem.textContent = '';
-    equipeContagem.classList.add('hidden');
-  }
 }
 
 async function carregarUnidades() {
@@ -226,12 +221,6 @@ async function carregarEquipes(unidadeId) {
       equipeTriggerLabel.classList.add('text-gray-500');
     }
 
-    if (equipeContagem) {
-      const n = equipes.length;
-      equipeContagem.textContent =
-        n > 0 ? `${n} equipe${n === 1 ? '' : 's'} ativa${n === 1 ? '' : 's'} nesta unidade` : '';
-      equipeContagem.classList.toggle('hidden', n === 0);
-    }
     atualizarTriggerEquipe();
   } catch (err) {
     selectEquipe.innerHTML = '';
