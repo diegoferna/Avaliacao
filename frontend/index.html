@@ -5,36 +5,143 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Avaliação da Satisfação do Usuário</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="min-h-screen bg-page">
 
-  <!-- Header -->
-  <header class="bg-white shadow-sm">
-    <div class="max-w-2xl mx-auto px-4 py-6 text-center">
-      <div class="text-4xl mb-2">🏥</div>
-      <h1 class="text-2xl font-bold text-gray-800">Escuta SUS APS</h1>
-      <p class="text-gray-500 text-sm mt-1">Avaliação da Satisfação do Usuário</p>
+  <!-- Background decorative healthcare illustrations -->
+  <div class="bg-decoration" aria-hidden="true">
+    <!-- Soft gradient blobs -->
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+
+    <!-- Stethoscope - top left -->
+    <svg class="bg-illust bg-illust-stethoscope" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="46" fill="#dbeafe" opacity="0.5"/>
+      <path d="M35 25c-6 0-11 5-11 11v18c0 10 8 18 18 18h2c10 0 18-8 18-18V36c0-6-5-11-11-11" stroke="#3b82f6" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="62" cy="68" r="6" stroke="#3b82f6" stroke-width="2.5" fill="#dbeafe"/>
+      <circle cx="35" cy="22" r="4" fill="#3b82f6" opacity="0.7"/>
+      <circle cx="51" cy="22" r="4" fill="#3b82f6" opacity="0.7"/>
+    </svg>
+
+    <!-- Heart with pulse - top right -->
+    <svg class="bg-illust bg-illust-heart" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="46" fill="#dbeafe" opacity="0.4"/>
+      <path d="M50 78l-2.2-2C32 62 22 53 22 42c0-9 7-16 16-16 5 0 9.5 2.3 12 6 2.5-3.7 7-6 12-6 9 0 16 7 16 16 0 11-10 20-25.8 34L50 78z" fill="#93c5fd" opacity="0.6"/>
+      <path d="M50 78l-2.2-2C32 62 22 53 22 42c0-9 7-16 16-16 5 0 9.5 2.3 12 6 2.5-3.7 7-6 12-6 9 0 16 7 16 16 0 11-10 20-25.8 34L50 78z" stroke="#3b82f6" stroke-width="2.5" fill="none"/>
+      <path d="M30 50h12l4-10 6 20 5-14 4 4h12" stroke="#2563eb" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <!-- Medical clipboard - right middle -->
+    <svg class="bg-illust bg-illust-clipboard" viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="16" width="74" height="88" rx="8" fill="#dbeafe" opacity="0.5" stroke="#93c5fd" stroke-width="2"/>
+      <rect x="28" y="8" width="34" height="16" rx="4" fill="#93c5fd" opacity="0.6" stroke="#3b82f6" stroke-width="2"/>
+      <circle cx="45" cy="16" r="3" fill="#3b82f6"/>
+      <line x1="24" y1="44" x2="66" y2="44" stroke="#93c5fd" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="24" y1="56" x2="58" y2="56" stroke="#93c5fd" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="24" y1="68" x2="62" y2="68" stroke="#93c5fd" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="24" y1="80" x2="50" y2="80" stroke="#93c5fd" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M54 76l4 4 8-8" stroke="#3b82f6" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <!-- Medical cross / first aid - bottom left -->
+    <svg class="bg-illust bg-illust-firstaid" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="22" width="80" height="60" rx="10" fill="#dbeafe" opacity="0.5" stroke="#93c5fd" stroke-width="2"/>
+      <rect x="12" y="18" width="76" height="10" rx="5" fill="#93c5fd" opacity="0.5" stroke="#3b82f6" stroke-width="2"/>
+      <rect x="38" y="36" width="24" height="32" rx="3" fill="#3b82f6" opacity="0.25"/>
+      <rect x="42" y="28" width="16" height="48" rx="3" fill="none" stroke="#3b82f6" stroke-width="0"/>
+      <path d="M44 52h12M50 46v12" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+
+    <!-- Stars / rating - top right area -->
+    <svg class="bg-illust bg-illust-stars" viewBox="0 0 120 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 2l3.5 7 7.5 1.1-5.5 5.3 1.3 7.6L15 19.5 8.2 23l1.3-7.6L4 10.1l7.5-1.1z" fill="#93c5fd" opacity="0.5" stroke="#3b82f6" stroke-width="1.5"/>
+      <path d="M40 2l3.5 7 7.5 1.1-5.5 5.3 1.3 7.6L40 19.5 33.2 23l1.3-7.6L29 10.1l7.5-1.1z" fill="#93c5fd" opacity="0.5" stroke="#3b82f6" stroke-width="1.5"/>
+      <path d="M65 2l3.5 7 7.5 1.1-5.5 5.3 1.3 7.6L65 19.5 58.2 23l1.3-7.6L54 10.1l7.5-1.1z" fill="#93c5fd" opacity="0.5" stroke="#3b82f6" stroke-width="1.5"/>
+      <path d="M90 2l3.5 7 7.5 1.1-5.5 5.3 1.3 7.6L90 19.5 83.2 23l1.3-7.6L79 10.1l7.5-1.1z" fill="#93c5fd" opacity="0.4" stroke="#3b82f6" stroke-width="1.5"/>
+      <path d="M115 2l3.5 7 7.5 1.1-5.5 5.3 1.3 7.6L115 19.5l-6.8 3.5 1.3-7.6-5.5-5.3 7.5-1.1z" fill="#93c5fd" opacity="0.3" stroke="#3b82f6" stroke-width="1.5"/>
+    </svg>
+
+    <!-- Syringe - left middle -->
+    <svg class="bg-illust bg-illust-syringe" viewBox="0 0 40 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="12" y="20" width="16" height="70" rx="3" fill="#dbeafe" opacity="0.5" stroke="#93c5fd" stroke-width="2"/>
+      <rect x="8" y="16" width="24" height="8" rx="2" fill="#93c5fd" opacity="0.4" stroke="#3b82f6" stroke-width="2"/>
+      <line x1="20" y1="90" x2="20" y2="110" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+      <rect x="14" y="4" width="12" height="12" rx="2" fill="none" stroke="#3b82f6" stroke-width="2"/>
+      <line x1="12" y1="38" x2="28" y2="38" stroke="#93c5fd" stroke-width="1.5"/>
+      <line x1="12" y1="50" x2="28" y2="50" stroke="#93c5fd" stroke-width="1.5"/>
+      <line x1="12" y1="62" x2="28" y2="62" stroke="#93c5fd" stroke-width="1.5"/>
+      <line x1="12" y1="74" x2="28" y2="74" stroke="#93c5fd" stroke-width="1.5"/>
+    </svg>
+
+    <!-- Shield / protection - bottom right -->
+    <svg class="bg-illust bg-illust-shield" viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M40 8L10 24v28c0 22 12.7 34.3 30 42 17.3-7.7 30-20 30-42V24L40 8z" fill="#dbeafe" opacity="0.45" stroke="#93c5fd" stroke-width="2"/>
+      <path d="M34 50h12M40 44v12" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+      <path d="M30 62l5 5 14-14" stroke="#3b82f6" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+    </svg>
+
+    <!-- Small pill capsule - floating -->
+    <svg class="bg-illust bg-illust-pill" viewBox="0 0 60 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="56" height="26" rx="13" fill="#dbeafe" opacity="0.5" stroke="#93c5fd" stroke-width="2"/>
+      <line x1="30" y1="2" x2="30" y2="28" stroke="#93c5fd" stroke-width="1.5"/>
+      <rect x="30" y="2" width="28" height="26" rx="13" fill="#93c5fd" opacity="0.3"/>
+    </svg>
+
+    <!-- Small floating circles (bubbles) -->
+    <div class="bg-bubble bg-bubble-1"></div>
+    <div class="bg-bubble bg-bubble-2"></div>
+    <div class="bg-bubble bg-bubble-3"></div>
+    <div class="bg-bubble bg-bubble-4"></div>
+    <div class="bg-bubble bg-bubble-5"></div>
+  </div>
+
+  <!-- Header Institucional -->
+  <header class="header-institucional">
+    <div class="header-content">
+      <img src="Assets/salvador_logo.png" alt="Prefeitura de Salvador" class="header-logo" />
+      <div class="header-divider"></div>
+      <div class="header-text">
+        <h1 class="header-title">Escuta SUS APS</h1>
+        <p class="header-subtitle">Avaliação da Satisfação do Usuário</p>
+      </div>
     </div>
   </header>
 
+  <!-- Hero / Intro -->
+  <div class="hero-section">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+      <p class="hero-message">Sua opinião ajuda a melhorar o atendimento nas unidades de saúde</p>
+    </div>
+  </div>
+
   <!-- Main Content -->
-  <main class="max-w-2xl mx-auto px-4 py-6">
+  <main class="max-w-2xl mx-auto px-4 py-6 relative z-10">
     <form id="form-avaliacao" novalidate>
 
       <!-- Identificação do atendimento -->
-      <div class="bg-white rounded-xl shadow-sm p-5 mb-4">
-        <h2 class="text-lg font-semibold text-gray-800 mb-3">Identificação do atendimento</h2>
-        <label for="unidade" class="block text-sm font-semibold text-gray-700 mb-2">
+      <div class="card mb-4">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <h2 class="card-title">Identificação do atendimento</h2>
+        </div>
+        <label for="unidade" class="field-label">
           Estabelecimento de Saúde
         </label>
         <select id="unidade" name="unidade_id" required
-          class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+          class="field-select">
           <option value="">Selecione o estabelecimento de saúde...</option>
         </select>
         <p id="erro-unidade" class="text-red-500 text-xs mt-1 hidden">Selecione um estabelecimento de saúde.</p>
 
-        <label for="equipe-trigger" class="block text-sm font-semibold text-gray-700 mb-2 mt-4">
+        <label for="equipe-trigger" class="field-label mt-4">
           Equipe de Saúde
         </label>
         <div id="equipe-wrap" class="relative">
@@ -45,7 +152,7 @@
             aria-haspopup="listbox" aria-expanded="false"
             class="equipe-trigger w-full border border-gray-300 rounded-lg px-4 py-3 text-left text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-gray-400 transition disabled:bg-gray-100 disabled:text-gray-500 flex justify-between items-center gap-2 min-h-[3rem]">
             <span id="equipe-trigger-label" class="truncate flex-1">Selecione primeiro o estabelecimento...</span>
-            <span class="equipe-trigger-chevron text-gray-400 text-xs flex-shrink-0" aria-hidden="true">▼</span>
+            <span class="equipe-trigger-chevron text-gray-400 text-xs flex-shrink-0" aria-hidden="true">&#9660;</span>
           </button>
           <div id="equipe-panel" class="equipe-panel hidden absolute z-30 left-0 right-0 mt-1 max-h-64 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg py-1" role="listbox" aria-labelledby="equipe-trigger"></div>
         </div>
@@ -54,12 +161,19 @@
       </div>
 
       <!-- Perguntas de Avaliação -->
-      <div class="bg-white rounded-xl shadow-sm p-5 mb-4">
-        <h2 class="text-lg font-semibold text-gray-800 mb-4">Avaliação do atendimento</h2>
+      <div class="card mb-4">
+        <div class="card-header">
+          <div class="card-icon card-icon--health">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <path d="M9 12h6m-3-3v6"/><circle cx="12" cy="12" r="10"/>
+            </svg>
+          </div>
+          <h2 class="card-title">Avaliação do atendimento</h2>
+        </div>
 
         <!-- Acesso -->
         <div class="pergunta mb-6" data-campo="acesso">
-          <p class="text-sm text-gray-700 font-medium mb-3">
+          <p class="question-text">
             1. Você ficou satisfeito(a) com a facilidade para falar ou ser atendido(a) pela sua equipe quando precisou?
           </p>
           <div class="escala-satisfacao flex flex-wrap gap-2">
@@ -89,7 +203,7 @@
 
         <!-- Integralidade -->
         <div class="pergunta mb-6" data-campo="integralidade">
-          <p class="text-sm text-gray-700 font-medium mb-3">
+          <p class="question-text">
             2. Você ficou satisfeito(a) com as orientações sobre como cuidar da sua saúde fornecidas pela equipe?
           </p>
           <div class="escala-satisfacao flex flex-wrap gap-2">
@@ -119,7 +233,7 @@
 
         <!-- Longitudinalidade -->
         <div class="pergunta mb-6" data-campo="longitudinalidade">
-          <p class="text-sm text-gray-700 font-medium mb-3">
+          <p class="question-text">
             3. Você ficou satisfeito(a) com a confiança para conversar sobre sua vida e sua saúde com a equipe?
           </p>
           <div class="escala-satisfacao flex flex-wrap gap-2">
@@ -149,7 +263,7 @@
 
         <!-- Receptividade -->
         <div class="pergunta mb-6" data-campo="receptividade">
-          <p class="text-sm text-gray-700 font-medium mb-3">
+          <p class="question-text">
             4. Você ficou satisfeito(a) com a forma como foi recebido(a) na unidade de saúde?
           </p>
           <div class="escala-satisfacao flex flex-wrap gap-2">
@@ -179,7 +293,7 @@
 
         <!-- Atendimento -->
         <div class="pergunta mb-2" data-campo="atendimento">
-          <p class="text-sm text-gray-700 font-medium mb-3">
+          <p class="question-text">
             5. De forma geral, você ficou satisfeito(a) com o atendimento na unidade de saúde?
           </p>
           <div class="escala-satisfacao flex flex-wrap gap-2">
@@ -209,20 +323,25 @@
       </div>
 
       <!-- Comentário -->
-      <div class="bg-white rounded-xl shadow-sm p-5 mb-4">
-        <label for="comentario" class="block text-sm font-semibold text-gray-700 mb-2">
-          💬 Deixe um comentário ou sugestão (opcional)
-        </label>
+      <div class="card mb-4">
+        <div class="card-header">
+          <div class="card-icon card-icon--comment">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+          </div>
+          <h2 class="card-title">Deixe um comentário ou sugestão <span class="font-normal text-gray-400">(opcional)</span></h2>
+        </div>
         <textarea id="comentario" name="comentario" rows="3" maxlength="1000"
           placeholder="Escreva aqui sua opinião..."
-          class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+          class="field-textarea"></textarea>
         <p class="text-gray-400 text-xs text-right mt-1"><span id="char-count">0</span>/1000</p>
       </div>
 
       <!-- Botão Enviar -->
       <div class="text-center mb-8">
         <button type="submit" id="btn-enviar"
-          class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-10 rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-blue-300">
+          class="btn-submit">
           Enviar Avaliação
         </button>
       </div>
@@ -230,7 +349,7 @@
 
     <!-- Mensagem de Sucesso -->
     <div id="mensagem-sucesso" class="hidden text-center bg-green-50 border border-green-200 rounded-xl p-6 mb-8">
-      <div class="text-5xl mb-3">✅</div>
+      <div class="text-5xl mb-3">&#10003;</div>
       <p class="text-green-800 text-base font-medium leading-relaxed">
         Obrigado! Sua avaliação ajuda a melhorar o atendimento nas unidades de saúde
       </p>
@@ -246,9 +365,12 @@
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="text-center text-gray-400 text-xs py-6">
-    <p>Secretaria Municipal de Saúde &copy; 2026</p>
+  <!-- Footer Institucional -->
+  <footer class="footer-institucional">
+    <div class="footer-content">
+      <img src="Assets/salvador_logo.png" alt="Prefeitura de Salvador" class="footer-logo" />
+      <p class="footer-text">Secretaria Municipal de Saúde &copy; 2026</p>
+    </div>
   </footer>
 
   <script src="script.js"></script>
