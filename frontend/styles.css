@@ -432,7 +432,7 @@ body {
 .card-header {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
   padding: 20px 25px;
   width: 100%;
   background: rgba(255, 255, 255, 0.5);
@@ -541,6 +541,7 @@ body {
   min-width: 80px;
   text-align: center;
   background: var(--cinza-50);
+  height: 80px;
 }
 
 .opcao-btn:hover {
@@ -551,10 +552,12 @@ body {
 }
 
 .opcao-btn span.opcao-texto {
-  font-size: 0.65rem;
-  color: var(--cinza-500);
-  line-height: 1.2;
+  font-size: 0.75rem;
+  line-height: 1.1;
+  margin-top: 5px;
+  display: block;
 }
+
 
 /* Estado selecionado */
 input[type="radio"]:checked + .opcao-btn {
@@ -576,8 +579,12 @@ input[type="radio"]:checked + .opcao-btn .opcao-texto {
 /* Escala responsiva */
 .escala-satisfacao {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Centraliza o grupo de botões */
+  gap: 8px;               /* Mantém um espaço fixo e igual entre todos */
+  width: 100%;
+  flex-wrap: nowrap;      /* Mantém os 5 na mesma linha */
 }
+
 
 /* --- Submit Button --- */
 .btn-submit {
@@ -771,7 +778,6 @@ input[type="radio"]:checked + .opcao-btn .opcao-texto {
   }
 
   .card {
-    padding: 18px;
     border-radius: 10px;
   }
 
