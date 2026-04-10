@@ -3,7 +3,7 @@
     {
       "id": 1,
       "cnes": "1234567",
-      "nome": "USF Mock — Centro",
+      "nome": "USF OLGA DE ALAKETU VALE DO MATATU",
       "distrito": "Centro",
       "tipo": "USF"
     },
@@ -19,26 +19,53 @@
     {
       "id": 101,
       "unidade_id": 1,
-      "nome": "Equipe Mock A",
-      "cor": "#2563eb",
-      "cor_label": "Azul",
-      "tipo": "ESF"
+      "nome": "EQUIPE ALTO DO CRUZEIRO",
+      "cor": "#e91e63",
+      "cor_label": "ROSA",
+      "tipo": "USF"
     },
     {
       "id": 102,
       "unidade_id": 1,
-      "nome": "Equipe Mock B",
-      "cor": "#16a34a",
-      "cor_label": "Verde",
-      "tipo": "ESF"
+      "nome": "EQUIPE ALTO DO CRUZEIRO II",
+      "cor": "#ef6c00",
+      "cor_label": "Laranja",
+      "tipo": "USF"
     },
     {
       "id": 201,
-      "unidade_id": 2,
-      "nome": "Equipe Mock C",
-      "cor": "#ca8a04",
+      "unidade_id": 1,
+      "nome": "EQUIPE ALTO DO CRUZEIRO III",
+      "cor": "#f9a825",
       "cor_label": "Amarelo",
-      "tipo": "ESF"
+      "tipo": "USF"
+    }
+    ,
+    {
+      "id": 201,
+      "unidade_id": 1,
+      "nome": "EQUIPE LUIS ANSELMO",
+      "cor": "#2e7d32",
+      "cor_label": "Verde",
+      "tipo": "USF"
+    }
+    ,
+    {
+      "id": 201,
+      "unidade_id": 1,
+      "nome": "EQUIPE MATATU",
+      "cor": "#1565c0",
+      "cor_label": "Azul",
+      "tipo": "USF"
+    }
+    ,
+    {
+      "id": 201,
+      "unidade_id": 1,
+      "nome": "EQUIPE VALE DO MATATU",
+      "cor": "#c62828",
+      "cor_label": "Vermelha",
+      "tipo": "USF"
     }
   ]
 }
