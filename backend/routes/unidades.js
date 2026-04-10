@@ -1,16 +1,8 @@
-const pool = require('../database/connection');
+const portal = require('../repositories/portalRepository');
 
 async function unidadesRoutes(fastify) {
-  // Lista apenas estabelecimentos ativos (portal / formulário público).
-  // O seed grava todos os status; inativos permanecem no banco para outros usos.
-  fastify.get('/unidades', async (request, reply) => {
-    const result = await pool.query(
-      `SELECT id, cnes, nome, distrito, tipo
-       FROM unidades
-       WHERE status = 1
-       ORDER BY nome`
-    );
-    return result.rows;
+  fastify.get('/unidades', async () => {
+    return portal.listUnidadesAtivas();
   });
 }
 

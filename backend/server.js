@@ -1,5 +1,6 @@
 const path = require('path');
 const { execSync } = require('child_process');
+const { mode: dataSourceMode } = require('./config/dataSource');
 const fastify = require('fastify')({ logger: true });
 
 const repoRoot = path.join(__dirname, '..');
@@ -66,6 +67,9 @@ const start = async () => {
     const port = resolveDevPort();
     await fastify.listen({ port, host: '0.0.0.0' });
     console.log(`Servidor rodando em http://localhost:${port}`);
+    console.log(
+      `Fonte de dados: ${dataSourceMode === 'mock' ? 'mock (fixtures)' : 'homolog (PostgreSQL)'}`
+    );
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

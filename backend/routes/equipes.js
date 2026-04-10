@@ -1,7 +1,6 @@
-const pool = require('../database/connection');
+const portal = require('../repositories/portalRepository');
 
 async function equipesRoutes(fastify) {
-  // Equipes ativas da unidade selecionada (portal). Inativas ficam só no banco.
   fastify.get('/equipes', async (request, reply) => {
     const unidadeId = request.query.unidade_id;
     if (unidadeId === undefined || unidadeId === null || String(unidadeId).trim() === '') {
@@ -12,14 +11,7 @@ async function equipesRoutes(fastify) {
       return reply.status(400).send({ error: 'unidade_id inválido.' });
     }
 
-    const result = await pool.query(
-      `SELECT id, nome, cor, cor_label, tipo
-       FROM equipes
-       WHERE unidade_id = $1 AND status = 1
-       ORDER BY nome`,
-      [id]
-    );
-    return result.rows;
+    return portal.listEquipesAtivasPorUnidade(id);
   });
 }
 

@@ -82,10 +82,22 @@ function painelEquipeAberto() {
   return equipePanel && !equipePanel.classList.contains('hidden');
 }
 
+function cardDoDropdown() {
+  if (!equipeWrap) return null;
+  return equipeWrap.closest('.card');
+}
+
+function atualizarCamadaDropdown(ativo) {
+  const card = cardDoDropdown();
+  if (!card) return;
+  card.classList.toggle('card-com-dropdown-open', Boolean(ativo));
+}
+
 function fecharPainelEquipe() {
   if (!equipePanel || !equipeTrigger) return;
   equipePanel.classList.add('hidden');
   equipeWrap.classList.remove('equipe-open');
+  atualizarCamadaDropdown(false);
   equipeTrigger.setAttribute('aria-expanded', 'false');
 }
 
@@ -93,6 +105,7 @@ function abrirPainelEquipe() {
   if (!equipePanel || !equipeTrigger || equipeTrigger.disabled) return;
   equipePanel.classList.remove('hidden');
   equipeWrap.classList.add('equipe-open');
+  atualizarCamadaDropdown(true);
   equipeTrigger.setAttribute('aria-expanded', 'true');
 }
 

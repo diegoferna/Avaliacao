@@ -1,0 +1,44 @@
+{
+  "unidades": [
+    {
+      "id": 1,
+      "cnes": "1234567",
+      "nome": "USF Mock — Centro",
+      "distrito": "Centro",
+      "tipo": "USF"
+    },
+    {
+      "id": 2,
+      "cnes": "7654321",
+      "nome": "USF Mock — Subúrbio",
+      "distrito": "Subúrbio",
+      "tipo": "USF"
+    }
+  ],
+  "equipes": [
+    {
+      "id": 101,
+      "unidade_id": 1,
+      "nome": "Equipe Mock A",
+      "cor": "#2563eb",
+      "cor_label": "Azul",
+      "tipo": "ESF"
+    },
+    {
+      "id": 102,
+      "unidade_id": 1,
+      "nome": "Equipe Mock B",
+      "cor": "#16a34a",
+      "cor_label": "Verde",
+      "tipo": "ESF"
+    },
+    {
+      "id": 201,
+      "unidade_id": 2,
+      "nome": "Equipe Mock C",
+      "cor": "#ca8a04",
+      "cor_label": "Amarelo",
+      "tipo": "ESF"
+    }
+  ]
+}

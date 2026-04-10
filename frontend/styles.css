@@ -416,6 +416,7 @@ body {
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.4);
   overflow: hidden;
+  position: relative;
   margin-bottom: 25px;
   width: 100%;
   max-width: 850px;
@@ -664,9 +665,14 @@ input[type="radio"]:checked + .opcao-btn .opcao-texto {
 }
 
 /* --- Dropdown customizado de equipes --- */
-/* Dois .card seguidos têm o mesmo z-index (10); o segundo pintava por cima do painel absoluto. */
-.card:has(#equipe-wrap.equipe-open) {
+/* Quando o dropdown abre, o card precisa ficar acima dos demais e sem recorte do painel. */
+.card.card-com-dropdown-open {
   z-index: 40;
+  overflow: visible;
+}
+
+.equipe-panel {
+  z-index: 45;
 }
 
 .equipe-item {
