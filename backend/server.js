@@ -17,7 +17,7 @@ function resolveDevPort() {
       cwd: repoRoot,
     }).trim();
     if (branch === 'dev' && process.env.NODE_ENV !== 'production') {
-      return 3002;
+      return 3003;
     }
   } catch {
     // fora do git ou git indisponível
