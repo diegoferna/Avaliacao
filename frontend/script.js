@@ -18,9 +18,9 @@ const btnNovaAvaliacao = document.getElementById('btn-nova-avaliacao');
 const campos = ['acesso', 'integralidade', 'longitudinalidade', 'receptividade', 'atendimento'];
 
 /** Lista: fundo com cor identificável. Hover: mais saturado (mesma cor da equipe; CSS evita hover azul do SO). */
-const TINT_LISTA = 0.38;
-const TINT_HOVER = 0.58;
-const TINT_TRIGGER = 0.32;
+const TINT_LISTA = 0.21;
+const TINT_HOVER = 0.38;
+const TINT_TRIGGER = 0.18;
 
 const COR_TEXTO_EQUIPES = '#374151';
 
