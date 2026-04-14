@@ -1,302 +1,587 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Avaliação da Satisfação do Usuário</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-</head>
-<body class="animacao-bg">
-
-  <!-- Header Institucional -->
-  <header class="header-institucional">
-    <div class="header-content">
-      <div class="header-left">
-      <img src="Assets/icon-prancheta.png" alt="Prefeitura de Salvador" class="header-logo" />
-      <div class="header-divider"></div>
-      <div class="header-text">
-        <h1>Escuta SUS APS</h1>
-        <p>Avaliação da Satisfação do Usuário</p>
-    </div>
-    </div>
-
-    <div class="header-feed">
-      <span class="material-symbols-outlined emoji opacity-low">sentiment_dissatisfied</span>
-      <span class="material-symbols-outlined emoji">sentiment_neutral</span>
-      <span class="material-symbols-outlined emoji highlight">sentiment_very_satisfied</span>
-      <div class="pulse-ring"></div>
-    </div>
-  </div>
-  </header>
-
-  <!-- Hero / Intro -->
-  
-
-  <!-- Main Content -->
-  <main class="max-w-4xl mx-auto px-4 py-6 relative z-10">
-    <form id="form-avaliacao" novalidate>
-
-      <!-- Identificação do atendimento -->
-      <div class="card mb-4">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
-              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avaliação da Satisfação do Usuário</title>
+    <link href="vendor/tailwind.min.css" rel="stylesheet" />
+    <link href="vendor/fonts/inter.css" rel="stylesheet" />
+    <link href="vendor/fonts/material-symbols-outlined.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+  </head>
+  <body class="animacao-bg">
+    <!-- Header Institucional -->
+    <header class="header-institucional">
+      <div class="header-content">
+        <div class="header-left">
+          <img
+            src="Assets/icon-prancheta.png"
+            alt="Prefeitura de Salvador"
+            class="header-logo"
+          />
+          <div class="header-divider"></div>
+          <div class="header-text">
+            <h1>Escuta SUS APS</h1>
+            <p>Avaliação da Satisfação do Usuário</p>
           </div>
-          <h2 class="card-title">Identificação do atendimento</h2>
         </div>
-        <div class="card-body">
-        <label for="unidade" class="field-label">
-          Estabelecimento de Saúde
-        </label>
-        <select id="unidade" name="unidade_id" required
-          class="field-select">
-          <option value="">Selecione o estabelecimento de saúde...</option>
-        </select>
-        <p id="erro-unidade" class="text-red-500 text-xs mt-1 hidden">Selecione um estabelecimento de saúde.</p>
 
-        <label for="equipe-trigger" class="field-label mt-4">
-          Equipe de Saúde
-        </label>
-        <div id="equipe-wrap" class="relative">
-          <select id="equipe" name="equipe_id" required disabled class="sr-only" tabindex="-1" aria-hidden="true">
-            <option value="">Selecione primeiro o estabelecimento...</option>
-          </select>
-          <button type="button" id="equipe-trigger" disabled
-            aria-haspopup="listbox" aria-expanded="false"
-            class="equipe-trigger w-full border border-gray-300 rounded-lg px-4 py-3 text-left text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-gray-400 transition disabled:bg-gray-100 disabled:text-gray-500 flex justify-between items-center gap-2 min-h-[3rem]">
-            <span id="equipe-trigger-label" class="truncate flex-1">Selecione primeiro o estabelecimento...</span>
-            <span class="equipe-trigger-chevron text-gray-400 text-xs flex-shrink-0" aria-hidden="true">&#9660;</span>
+        <div class="header-feed">
+          <span class="material-symbols-outlined emoji opacity-low"
+            >sentiment_dissatisfied</span
+          >
+          <span class="material-symbols-outlined emoji">sentiment_neutral</span>
+          <span class="material-symbols-outlined emoji highlight"
+            >sentiment_very_satisfied</span
+          >
+          <div class="pulse-ring"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero / Intro -->
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-6 relative z-10">
+      <form id="form-avaliacao" novalidate>
+        <!-- Identificação do atendimento -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="20"
+                height="20"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            </div>
+            <h2 class="card-title">Identificação do atendimento</h2>
+          </div>
+          <div class="card-body">
+            <label for="unidade" class="field-label">
+              Estabelecimento de Saúde
+            </label>
+            <select
+              id="unidade"
+              name="unidade_id"
+              required
+              class="field-select"
+            >
+              <option value="">Selecione o estabelecimento de saúde...</option>
+            </select>
+            <p id="erro-unidade" class="text-red-500 text-xs mt-1 hidden">
+              Selecione um estabelecimento de saúde.
+            </p>
+
+            <label for="equipe-trigger" class="field-label mt-4">
+              Equipe de Saúde
+            </label>
+            <div id="equipe-wrap" class="relative">
+              <select
+                id="equipe"
+                name="equipe_id"
+                required
+                disabled
+                class="sr-only"
+                tabindex="-1"
+                aria-hidden="true"
+              >
+                <option value="">
+                  Selecione primeiro o estabelecimento...
+                </option>
+              </select>
+              <button
+                type="button"
+                id="equipe-trigger"
+                disabled
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                class="equipe-trigger w-full border border-gray-300 rounded-lg px-4 py-3 text-left text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-gray-400 transition disabled:bg-gray-100 disabled:text-gray-500 flex justify-between items-center gap-2 min-h-[3rem]"
+              >
+                <span id="equipe-trigger-label" class="truncate flex-1"
+                  >Selecione primeiro o estabelecimento...</span
+                >
+                <span
+                  class="equipe-trigger-chevron text-gray-400 text-xs flex-shrink-0"
+                  aria-hidden="true"
+                  >&#9660;</span
+                >
+              </button>
+              <div
+                id="equipe-panel"
+                class="equipe-panel hidden absolute z-30 left-0 right-0 mt-1 max-h-64 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg py-1"
+                role="listbox"
+                aria-labelledby="equipe-trigger"
+              ></div>
+            </div>
+            <p
+              id="equipe-contagem"
+              class="text-xs text-gray-400 mt-1.5 hidden"
+              aria-live="polite"
+            ></p>
+            <p id="erro-equipe" class="text-red-500 text-xs mt-1 hidden">
+              Selecione uma equipe de saúde.
+            </p>
+          </div>
+        </div>
+
+        <!-- Perguntas de Avaliação -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-icon card-icon--health">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="20"
+                height="20"
+              >
+                <path d="M9 12h6m-3-3v6" />
+                <circle cx="12" cy="12" r="10" />
+              </svg>
+            </div>
+            <h2 class="card-title">Avaliação do atendimento</h2>
+          </div>
+
+          <!-- Acesso -->
+          <div class="card-body">
+            <div class="pergunta mb-6" data-campo="acesso">
+              <p class="question-text">
+                1. Você ficou satisfeito(a) com a facilidade para falar ou ser
+                atendido(a) pela sua equipe quando precisou?
+              </p>
+              <div class="escala-satisfacao flex flex-wrap gap-2">
+                <label class="opcao-radio">
+                  <input type="radio" name="acesso" value="1" class="hidden" />
+                  <span class="opcao-btn"
+                    >😠<span class="opcao-texto"
+                      >Muito insatisfeito(a)</span
+                    ></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input type="radio" name="acesso" value="2" class="hidden" />
+                  <span class="opcao-btn"
+                    >😟<span class="opcao-texto">Insatisfeito(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input type="radio" name="acesso" value="3" class="hidden" />
+                  <span class="opcao-btn"
+                    >😐<span class="opcao-texto">Neutro(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input type="radio" name="acesso" value="4" class="hidden" />
+                  <span class="opcao-btn"
+                    >😊<span class="opcao-texto">Satisfeito(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input type="radio" name="acesso" value="5" class="hidden" />
+                  <span class="opcao-btn"
+                    >😁<span class="opcao-texto"
+                      >Muito satisfeito(a)</span
+                    ></span
+                  >
+                </label>
+              </div>
+              <p class="erro-campo text-red-500 text-xs mt-1 hidden">
+                Selecione uma opção.
+              </p>
+            </div>
+
+            <!-- Integralidade -->
+            <div class="pergunta mb-6" data-campo="integralidade">
+              <p class="question-text">
+                2. Você ficou satisfeito(a) com as orientações sobre como cuidar
+                da sua saúde fornecidas pela equipe?
+              </p>
+              <div class="escala-satisfacao flex flex-wrap gap-2">
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="integralidade"
+                    value="1"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😠<span class="opcao-texto"
+                      >Muito insatisfeito(a)</span
+                    ></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="integralidade"
+                    value="2"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😟<span class="opcao-texto">Insatisfeito(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="integralidade"
+                    value="3"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😐<span class="opcao-texto">Neutro(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="integralidade"
+                    value="4"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😊<span class="opcao-texto">Satisfeito(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="integralidade"
+                    value="5"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😁<span class="opcao-texto"
+                      >Muito satisfeito(a)</span
+                    ></span
+                  >
+                </label>
+              </div>
+              <p class="erro-campo text-red-500 text-xs mt-1 hidden">
+                Selecione uma opção.
+              </p>
+            </div>
+
+            <!-- Longitudinalidade -->
+            <div class="pergunta mb-6" data-campo="longitudinalidade">
+              <p class="question-text">
+                3. Você ficou satisfeito(a) com a confiança para conversar sobre
+                sua vida e sua saúde com a equipe?
+              </p>
+              <div class="escala-satisfacao flex flex-wrap gap-2">
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="longitudinalidade"
+                    value="1"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😠<span class="opcao-texto"
+                      >Muito insatisfeito(a)</span
+                    ></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="longitudinalidade"
+                    value="2"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😟<span class="opcao-texto">Insatisfeito(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="longitudinalidade"
+                    value="3"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😐<span class="opcao-texto">Neutro(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="longitudinalidade"
+                    value="4"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😊<span class="opcao-texto">Satisfeito(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="longitudinalidade"
+                    value="5"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😁<span class="opcao-texto"
+                      >Muito satisfeito(a)</span
+                    ></span
+                  >
+                </label>
+              </div>
+              <p class="erro-campo text-red-500 text-xs mt-1 hidden">
+                Selecione uma opção.
+              </p>
+            </div>
+
+            <!-- Receptividade -->
+            <div class="pergunta mb-6" data-campo="receptividade">
+              <p class="question-text">
+                4. Você ficou satisfeito(a) com a forma como foi recebido(a) na
+                unidade de saúde?
+              </p>
+              <div class="escala-satisfacao flex flex-wrap gap-2">
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="receptividade"
+                    value="1"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😠<span class="opcao-texto"
+                      >Muito insatisfeito(a)</span
+                    ></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="receptividade"
+                    value="2"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😟<span class="opcao-texto">Insatisfeito(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="receptividade"
+                    value="3"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😐<span class="opcao-texto">Neutro(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="receptividade"
+                    value="4"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😊<span class="opcao-texto">Satisfeito(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="receptividade"
+                    value="5"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😁<span class="opcao-texto"
+                      >Muito satisfeito(a)</span
+                    ></span
+                  >
+                </label>
+              </div>
+              <p class="erro-campo text-red-500 text-xs mt-1 hidden">
+                Selecione uma opção.
+              </p>
+            </div>
+
+            <!-- Atendimento -->
+            <div class="pergunta mb-2" data-campo="atendimento">
+              <p class="question-text">
+                5. De forma geral, você ficou satisfeito(a) com o atendimento na
+                unidade de saúde?
+              </p>
+              <div class="escala-satisfacao flex flex-wrap gap-2">
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="atendimento"
+                    value="1"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😠<span class="opcao-texto"
+                      >Muito insatisfeito(a)</span
+                    ></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="atendimento"
+                    value="2"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😟<span class="opcao-texto">Insatisfeito(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="atendimento"
+                    value="3"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😐<span class="opcao-texto">Neutro(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="atendimento"
+                    value="4"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😊<span class="opcao-texto">Satisfeito(a)</span></span
+                  >
+                </label>
+                <label class="opcao-radio">
+                  <input
+                    type="radio"
+                    name="atendimento"
+                    value="5"
+                    class="hidden"
+                  />
+                  <span class="opcao-btn"
+                    >😁<span class="opcao-texto"
+                      >Muito satisfeito(a)</span
+                    ></span
+                  >
+                </label>
+              </div>
+              <p class="erro-campo text-red-500 text-xs mt-1 hidden">
+                Selecione uma opção.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comentário -->
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-icon card-icon--comment">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="20"
+                height="20"
+              >
+                <path
+                  d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+                />
+              </svg>
+            </div>
+            <h2 class="card-title">
+              Deixe um comentário ou sugestão
+              <span class="font-normal text-gray-400">(opcional)</span>
+            </h2>
+          </div>
+          <div class="card-body">
+            <textarea
+              id="comentario"
+              name="comentario"
+              rows="3"
+              maxlength="1000"
+              placeholder="Escreva aqui sua opinião..."
+              class="field-textarea"
+            ></textarea>
+            <p class="text-gray-400 text-xs text-right mt-1">
+              <span id="char-count">0</span>/1000
+            </p>
+          </div>
+        </div>
+
+        <!-- Botão Enviar -->
+        <div class="text-center mb-8">
+          <button type="submit" id="btn-enviar" class="btn-submit">
+            ENVIAR AVALIAÇÃO
           </button>
-          <div id="equipe-panel" class="equipe-panel hidden absolute z-30 left-0 right-0 mt-1 max-h-64 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg py-1" role="listbox" aria-labelledby="equipe-trigger"></div>
         </div>
-        <p id="equipe-contagem" class="text-xs text-gray-400 mt-1.5 hidden" aria-live="polite"></p>
-        <p id="erro-equipe" class="text-red-500 text-xs mt-1 hidden">Selecione uma equipe de saúde.</p>
-      </div>
-    </div>
+      </form>
 
-      <!-- Perguntas de Avaliação -->
-      <div class="card mb-4">
-        <div class="card-header">
-          <div class="card-icon card-icon--health">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
-              <path d="M9 12h6m-3-3v6"/><circle cx="12" cy="12" r="10"/>
-            </svg>
-          </div>
-          <h2 class="card-title">Avaliação do atendimento</h2>
-        </div>
-
-        <!-- Acesso -->
-         <div class="card-body">
-        <div class="pergunta mb-6" data-campo="acesso">
-          <p class="question-text">
-            1. Você ficou satisfeito(a) com a facilidade para falar ou ser atendido(a) pela sua equipe quando precisou?
-          </p>
-          <div class="escala-satisfacao flex flex-wrap gap-2">
-            <label class="opcao-radio">
-              <input type="radio" name="acesso" value="1" class="hidden">
-              <span class="opcao-btn">😠<span class="opcao-texto">Muito insatisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="acesso" value="2" class="hidden">
-              <span class="opcao-btn">😟<span class="opcao-texto">Insatisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="acesso" value="3" class="hidden">
-              <span class="opcao-btn">😐<span class="opcao-texto">Neutro(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="acesso" value="4" class="hidden">
-              <span class="opcao-btn">😊<span class="opcao-texto">Satisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="acesso" value="5" class="hidden">
-              <span class="opcao-btn">😁<span class="opcao-texto">Muito satisfeito(a)</span></span>
-            </label>
-          </div>
-          <p class="erro-campo text-red-500 text-xs mt-1 hidden">Selecione uma opção.</p>
-        </div>
-
-        <!-- Integralidade -->
-        <div class="pergunta mb-6" data-campo="integralidade">
-          <p class="question-text">
-            2. Você ficou satisfeito(a) com as orientações sobre como cuidar da sua saúde fornecidas pela equipe?
-          </p>
-          <div class="escala-satisfacao flex flex-wrap gap-2">
-            <label class="opcao-radio">
-              <input type="radio" name="integralidade" value="1" class="hidden">
-              <span class="opcao-btn">😠<span class="opcao-texto">Muito insatisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="integralidade" value="2" class="hidden">
-              <span class="opcao-btn">😟<span class="opcao-texto">Insatisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="integralidade" value="3" class="hidden">
-              <span class="opcao-btn">😐<span class="opcao-texto">Neutro(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="integralidade" value="4" class="hidden">
-              <span class="opcao-btn">😊<span class="opcao-texto">Satisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="integralidade" value="5" class="hidden">
-              <span class="opcao-btn">😁<span class="opcao-texto">Muito satisfeito(a)</span></span>
-            </label>
-          </div>
-          <p class="erro-campo text-red-500 text-xs mt-1 hidden">Selecione uma opção.</p>
-        </div>
-
-        <!-- Longitudinalidade -->
-        <div class="pergunta mb-6" data-campo="longitudinalidade">
-          <p class="question-text">
-            3. Você ficou satisfeito(a) com a confiança para conversar sobre sua vida e sua saúde com a equipe?
-          </p>
-          <div class="escala-satisfacao flex flex-wrap gap-2">
-            <label class="opcao-radio">
-              <input type="radio" name="longitudinalidade" value="1" class="hidden">
-              <span class="opcao-btn">😠<span class="opcao-texto">Muito insatisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="longitudinalidade" value="2" class="hidden">
-              <span class="opcao-btn">😟<span class="opcao-texto">Insatisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="longitudinalidade" value="3" class="hidden">
-              <span class="opcao-btn">😐<span class="opcao-texto">Neutro(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="longitudinalidade" value="4" class="hidden">
-              <span class="opcao-btn">😊<span class="opcao-texto">Satisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="longitudinalidade" value="5" class="hidden">
-              <span class="opcao-btn">😁<span class="opcao-texto">Muito satisfeito(a)</span></span>
-            </label>
-          </div>
-          <p class="erro-campo text-red-500 text-xs mt-1 hidden">Selecione uma opção.</p>
-        </div>
-
-        <!-- Receptividade -->
-        <div class="pergunta mb-6" data-campo="receptividade">
-          <p class="question-text">
-            4. Você ficou satisfeito(a) com a forma como foi recebido(a) na unidade de saúde?
-          </p>
-          <div class="escala-satisfacao flex flex-wrap gap-2">
-            <label class="opcao-radio">
-              <input type="radio" name="receptividade" value="1" class="hidden">
-              <span class="opcao-btn">😠<span class="opcao-texto">Muito insatisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="receptividade" value="2" class="hidden">
-              <span class="opcao-btn">😟<span class="opcao-texto">Insatisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="receptividade" value="3" class="hidden">
-              <span class="opcao-btn">😐<span class="opcao-texto">Neutro(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="receptividade" value="4" class="hidden">
-              <span class="opcao-btn">😊<span class="opcao-texto">Satisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="receptividade" value="5" class="hidden">
-              <span class="opcao-btn">😁<span class="opcao-texto">Muito satisfeito(a)</span></span>
-            </label>
-          </div>
-          <p class="erro-campo text-red-500 text-xs mt-1 hidden">Selecione uma opção.</p>
-        </div>
-
-        <!-- Atendimento -->
-        <div class="pergunta mb-2" data-campo="atendimento">
-          <p class="question-text">
-            5. De forma geral, você ficou satisfeito(a) com o atendimento na unidade de saúde?
-          </p>
-          <div class="escala-satisfacao flex flex-wrap gap-2">
-            <label class="opcao-radio">
-              <input type="radio" name="atendimento" value="1" class="hidden">
-              <span class="opcao-btn">😠<span class="opcao-texto">Muito insatisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="atendimento" value="2" class="hidden">
-              <span class="opcao-btn">😟<span class="opcao-texto">Insatisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="atendimento" value="3" class="hidden">
-              <span class="opcao-btn">😐<span class="opcao-texto">Neutro(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="atendimento" value="4" class="hidden">
-              <span class="opcao-btn">😊<span class="opcao-texto">Satisfeito(a)</span></span>
-            </label>
-            <label class="opcao-radio">
-              <input type="radio" name="atendimento" value="5" class="hidden">
-              <span class="opcao-btn">😁<span class="opcao-texto">Muito satisfeito(a)</span></span>
-            </label>
-          </div>
-          <p class="erro-campo text-red-500 text-xs mt-1 hidden">Selecione uma opção.</p>
-        </div>
-      </div>
-      </div>
-
-      <!-- Comentário -->
-
-      <div class="card mb-4">
-        <div class="card-header">
-          <div class="card-icon card-icon--comment">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
-              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-            </svg>
-          </div>
-          <h2 class="card-title">Deixe um comentário ou sugestão <span class="font-normal text-gray-400">(opcional)</span></h2>
-        </div>
-        <div class="card-body">
-        <textarea id="comentario" name="comentario" rows="3" maxlength="1000"
-          placeholder="Escreva aqui sua opinião..."
-          class="field-textarea"></textarea>
-        <p class="text-gray-400 text-xs text-right mt-1"><span id="char-count">0</span>/1000</p>
-      </div>
-    </div>
-
-      <!-- Botão Enviar -->
-      <div class="text-center mb-8">
-        <button type="submit" id="btn-enviar"
-          class="btn-submit">
-          ENVIAR AVALIAÇÃO
+      <!-- Mensagem de Sucesso -->
+      <div
+        id="mensagem-sucesso"
+        class="hidden text-center bg-green-50 border border-green-200 rounded-xl p-6 mb-8"
+      >
+        <div class="text-5xl mb-3">&#10003;</div>
+        <p class="text-green-800 text-base font-medium leading-relaxed">
+          Obrigado! Sua avaliação ajuda a melhorar o atendimento nas unidades de
+          saúde
+        </p>
+        <button
+          type="button"
+          id="btn-nova-avaliacao"
+          class="mt-4 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition"
+        >
+          Nova Avaliação
         </button>
       </div>
-    </form>
 
-    <!-- Mensagem de Sucesso -->
-    <div id="mensagem-sucesso" class="hidden text-center bg-green-50 border border-green-200 rounded-xl p-6 mb-8">
-      <div class="text-5xl mb-3">&#10003;</div>
-      <p class="text-green-800 text-base font-medium leading-relaxed">
-        Obrigado! Sua avaliação ajuda a melhorar o atendimento nas unidades de saúde
-      </p>
-      <button type="button" id="btn-nova-avaliacao"
-        class="mt-4 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition">
-        Nova Avaliação
-      </button>
-    </div>
+      <!-- Mensagem de Erro -->
+      <div
+        id="mensagem-erro"
+        class="hidden text-center bg-red-50 border border-red-200 rounded-xl p-4 mb-4"
+      >
+        <p class="text-red-700 text-sm" id="texto-erro"></p>
+      </div>
+    </main>
 
-    <!-- Mensagem de Erro -->
-    <div id="mensagem-erro" class="hidden text-center bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
-      <p class="text-red-700 text-sm" id="texto-erro"></p>
-    </div>
-  </main>
+    <!-- Footer Institucional -->
+    <footer class="footer-institucional">
+      <div class="footer-content">
+        <img
+          src="Assets/marca-prefeitura-branco.png"
+          alt="Prefeitura de Salvador"
+          class="footer-logo"
+        />
+      </div>
+    </footer>
 
-  <!-- Footer Institucional -->
-  <footer class="footer-institucional">
-    <div class="footer-content">
-      <img src="Assets/marca-prefeitura-branco.png" alt="Prefeitura de Salvador" class="footer-logo" />
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
