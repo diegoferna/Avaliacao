@@ -291,6 +291,11 @@ body {
   left: 8%;
 }
 
+/* Coluna única (header + cards): mesma largura em todos os breakpoints */
+.page-col {
+  width: 100%;
+}
+
 /* --- Header Institucional --- */
 .header-institucional {
   background: rgba(255, 255, 255, 0.7);
@@ -300,8 +305,10 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  /* Largura = 100% da coluna única (.max-w-4xl .px-4), igual aos .card */
+  /* Largura = 100% da coluna (.page-col), igual aos .card */
   width: 100%;
+  min-width: 0;
+  align-self: stretch;
   box-sizing: border-box;
   margin-top: 0;
 }
@@ -460,6 +467,8 @@ body {
   position: relative;
   margin-bottom: 25px;
   width: 100%;
+  min-width: 0;
+  align-self: stretch;
 }
 
 .card-body {
@@ -923,6 +932,25 @@ input[type="radio"]:checked + .opcao-btn .opcao-texto {
 }
 
 @media (max-width: 480px) {
+  /* Header: evita overflow horizontal; emojis em linha abaixo, como o conteúdo dos cards quebra */
+  .header-content {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 10px;
+  }
+
+  .header-left {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .header-feed {
+    flex: 1 1 auto;
+    justify-content: center;
+    width: 100%;
+    padding-right: 0;
+  }
+
   .escala-satisfacao {
     gap: 6px;
   }
