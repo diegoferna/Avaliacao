@@ -24,9 +24,9 @@ const campos = [
 ];
 
 /** Lista: fundo com cor identificável. Hover: mais saturado (mesma cor da equipe; CSS evita hover azul do SO). */
-const TINT_LISTA = 0.38;
-const TINT_HOVER = 0.58;
-const TINT_TRIGGER = 0.32;
+const TINT_LISTA = 0.21;
+const TINT_HOVER = 0.38;
+const TINT_TRIGGER = 0.18;
 
 const COR_TEXTO_EQUIPES = "#374151";
 const COR_AMARELO_FIXA = "#fef8d1";
@@ -158,7 +158,10 @@ function renderizarPainelEquipes(equipes) {
         btn.style.setProperty("--equipe-bg", COR_AMARELO_FIXA);
         btn.style.setProperty("--equipe-bg-hover", COR_AMARELO_HOVER_FIXA);
       } else {
-        btn.style.setProperty("--equipe-bg", misturarComBranco(hex, TINT_LISTA));
+        btn.style.setProperty(
+          "--equipe-bg",
+          misturarComBranco(hex, TINT_LISTA),
+        );
         btn.style.setProperty(
           "--equipe-bg-hover",
           misturarComBranco(hex, TINT_HOVER),

@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="animacao-bg">
-    <!-- Header Institucional -->
+    <!-- Uma única coluna: header e cards compartilham exatamente a mesma largura útil -->
+    <div
+      class="max-w-4xl mx-auto px-4 py-6 relative z-10 flex flex-col gap-6"
+    >
     <header class="header-institucional">
       <div class="header-content">
         <div class="header-left">
@@ -39,10 +42,8 @@
       </div>
     </header>
 
-    <!-- Hero / Intro -->
-
     <!-- Main Content -->
-    <main class="max-w-4xl mx-auto px-4 py-6 relative z-10">
+    <main class="min-w-0">
       <form id="form-avaliacao" novalidate>
         <!-- Identificação do atendimento -->
         <div class="card mb-4">
@@ -566,6 +567,7 @@
         <p class="text-red-700 text-sm" id="texto-erro"></p>
       </div>
     </main>
+    </div>
 
     <!-- Footer Institucional -->
     <footer class="footer-institucional">
