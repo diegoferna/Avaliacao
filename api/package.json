@@ -1,0 +1,26 @@
+{
+  "name": "avaliacao-saude-partner-api",
+  "version": "1.0.0",
+  "description": "API REST read-only para integração com parceiros",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "migrate": "node scripts/migrate-all.js",
+    "migrate:force": "node scripts/migrate-all.js --force",
+    "key:generate": "node scripts/generate-api-key.js",
+    "client:create": "node scripts/create-api-client.js",
+    "client:status": "node scripts/set-api-client-status.js",
+    "package:deploy": "powershell -ExecutionPolicy Bypass -File scripts/package-for-deploy.ps1"
+  },
+  "dependencies": {
+    "@fastify/rate-limit": "^10.2.2",
+    "@fastify/swagger": "^9.4.2",
+    "@fastify/swagger-ui": "^5.2.2",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "fastify": "^5.2.1",
+    "fastify-plugin": "^5.0.1",
+    "pg": "^8.13.1"
+  }
+}

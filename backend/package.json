@@ -11,6 +11,7 @@
     "migrate:all": "node scripts/migrate-all.js",
     "equipes:cleanup": "node scripts/delete-esf-opcoes.js",
     "seed:eas": "node scripts/seed-eas-equipes.js",
+    "sync:unidades": "node scripts/sync-unidades-from-excel.js",
     "seed:ref": "node scripts/seed-ref-analytics.js",
     "pm2:start": "pm2 start ecosystem.config.cjs",
     "pm2:stop": "pm2 stop asu-hm",
