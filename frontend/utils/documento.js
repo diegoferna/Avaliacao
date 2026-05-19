@@ -1,6 +1,10 @@
+/**
+ * Validação de CPF e CNS (alinhado à regra Mãe Salvador / documento de referência).
+ * Sempre validar sobre dígitos puros (sem máscara).
+ */
 (function (global) {
   function somenteDigitos(valor) {
-    return String(valor || "").replace(/\D/g, "");
+    return String(valor || '').replace(/\D/g, '');
   }
 
   function sequenciaRepetida(digits) {
@@ -29,20 +33,36 @@
     return resto === Number(digits11[10]);
   }
 
-  function validarCnsDefinitivo(digits15) {
-    const pis = digits15.substring(0, 11);
+  function validarCnsTipo1(digits15) {
+    const primeiro = digits15[0];
+    if (primeiro !== '1' && primeiro !== '2') return false;
+
+    const base11 = digits15.substring(0, 11);
     let soma = 0;
     for (let i = 0; i < 11; i += 1) {
-      soma += Number(pis[i]) * (15 - i);
+      soma += Number(base11[i]) * (15 - i);
     }
-    let resto = soma % 11;
-    let dv = 11 - resto;
+
+    let dv = 11 - (soma % 11);
     if (dv === 11) dv = 0;
-    const esperado = pis + String(dv);
-    return esperado === digits15.substring(0, 12);
+
+    let esperado;
+    if (dv === 10) {
+      const soma2 = soma + 2;
+      let dv2 = 11 - (soma2 % 11);
+      if (dv2 === 11) dv2 = 0;
+      esperado = `${base11}001${dv2}`;
+    } else {
+      esperado = `${base11}000${dv}`;
+    }
+
+    return digits15 === esperado;
   }
 
-  function validarCnsProvisorio(digits15) {
+  function validarCnsTipo2(digits15) {
+    const primeiro = Number(digits15[0]);
+    if (primeiro !== 7 && primeiro !== 8 && primeiro !== 9) return false;
+
     let soma = 0;
     for (let i = 0; i < 15; i += 1) {
       soma += Number(digits15[i]) * (15 - i);
@@ -55,11 +75,11 @@
       return false;
     }
     const primeiro = digits15[0];
-    if (primeiro === "1" || primeiro === "2") {
-      return validarCnsDefinitivo(digits15);
+    if (primeiro === '1' || primeiro === '2') {
+      return validarCnsTipo1(digits15);
     }
-    if (primeiro === "7" || primeiro === "8" || primeiro === "9") {
-      return validarCnsProvisorio(digits15);
+    if (primeiro === '7' || primeiro === '8' || primeiro === '9') {
+      return validarCnsTipo2(digits15);
     }
     return false;
   }
@@ -67,10 +87,10 @@
   function validarCpfOuCns(valor) {
     const digits = somenteDigitos(valor);
     if (digits.length === 11) {
-      return { ok: validarCpf(digits), tipo: "cpf", digits };
+      return { ok: validarCpf(digits), tipo: 'cpf', digits };
     }
     if (digits.length === 15) {
-      return { ok: validarCns(digits), tipo: "cns", digits };
+      return { ok: validarCns(digits), tipo: 'cns', digits };
     }
     return { ok: false, tipo: null, digits };
   }
@@ -79,6 +99,8 @@
     somenteDigitos,
     validarCpf,
     validarCns,
+    validarCnsTipo1,
+    validarCnsTipo2,
     validarCpfOuCns,
   };
-})(typeof window !== "undefined" ? window : globalThis);
+})(typeof window !== 'undefined' ? window : globalThis);

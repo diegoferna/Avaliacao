@@ -1,3 +1,8 @@
+/**
+ * Validação de CPF e CNS (alinhado à regra Mãe Salvador / documento de referência).
+ * Sempre validar sobre dígitos puros (sem máscara).
+ */
+
 function somenteDigitos(valor) {
   return String(valor || '').replace(/\D/g, '');
 }
@@ -6,6 +11,7 @@ function sequenciaRepetida(digits) {
   return /^(\d)\1+$/.test(digits);
 }
 
+/** CPF — 11 dígitos, módulo 11 (Receita Federal). */
 function validarCpf(digits11) {
   if (!/^\d{11}$/.test(digits11) || sequenciaRepetida(digits11)) {
     return false;
@@ -28,20 +34,38 @@ function validarCpf(digits11) {
   return resto === Number(digits11[10]);
 }
 
-function validarCnsDefinitivo(digits15) {
-  const pis = digits15.substring(0, 11);
+/** CNS tipo 1 — primeiro dígito 1 ou 2 (base 11 + sufixo 000/001 + DV). */
+function validarCnsTipo1(digits15) {
+  const primeiro = digits15[0];
+  if (primeiro !== '1' && primeiro !== '2') return false;
+
+  const base11 = digits15.substring(0, 11);
   let soma = 0;
   for (let i = 0; i < 11; i += 1) {
-    soma += Number(pis[i]) * (15 - i);
+    soma += Number(base11[i]) * (15 - i);
   }
-  let resto = soma % 11;
-  let dv = 11 - resto;
+
+  let dv = 11 - (soma % 11);
   if (dv === 11) dv = 0;
-  const esperado = pis + String(dv);
-  return esperado === digits15.substring(0, 12);
+
+  let esperado;
+  if (dv === 10) {
+    const soma2 = soma + 2;
+    let dv2 = 11 - (soma2 % 11);
+    if (dv2 === 11) dv2 = 0;
+    esperado = `${base11}001${dv2}`;
+  } else {
+    esperado = `${base11}000${dv}`;
+  }
+
+  return digits15 === esperado;
 }
 
-function validarCnsProvisorio(digits15) {
+/** CNS tipo 2 — primeiro dígito 7, 8 ou 9 (soma ponderada % 11 === 0). */
+function validarCnsTipo2(digits15) {
+  const primeiro = Number(digits15[0]);
+  if (primeiro !== 7 && primeiro !== 8 && primeiro !== 9) return false;
+
   let soma = 0;
   for (let i = 0; i < 15; i += 1) {
     soma += Number(digits15[i]) * (15 - i);
@@ -55,14 +79,17 @@ function validarCns(digits15) {
   }
   const primeiro = digits15[0];
   if (primeiro === '1' || primeiro === '2') {
-    return validarCnsDefinitivo(digits15);
+    return validarCnsTipo1(digits15);
   }
   if (primeiro === '7' || primeiro === '8' || primeiro === '9') {
-    return validarCnsProvisorio(digits15);
+    return validarCnsTipo2(digits15);
   }
   return false;
 }
 
+/**
+ * @returns {{ ok: boolean, tipo: 'cpf'|'cns'|null, digits: string }}
+ */
 function validarCpfOuCns(valor) {
   const digits = somenteDigitos(valor);
   if (digits.length === 11) {
@@ -78,5 +105,7 @@ module.exports = {
   somenteDigitos,
   validarCpf,
   validarCns,
+  validarCnsTipo1,
+  validarCnsTipo2,
   validarCpfOuCns,
 };
