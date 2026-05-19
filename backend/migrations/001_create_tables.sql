@@ -25,8 +25,10 @@ CREATE TABLE IF NOT EXISTS avaliacoes (
 -- Índice para consultas por unidade
 CREATE INDEX IF NOT EXISTS idx_avaliacoes_unidade_id ON avaliacoes(unidade_id);
 
--- Dados iniciais: unidades de saúde de exemplo
-INSERT INTO unidades (nome, distrito, tipo) VALUES
+-- Exemplo só em banco vazio (dev local). Produção: use npm run seed:eas ou sync:unidades.
+INSERT INTO unidades (nome, distrito, tipo)
+SELECT v.nome, v.distrito, v.tipo
+FROM (VALUES
     ('UBS Central', 'Centro', 'UBS'),
     ('UBS Vila Nova', 'Norte', 'UBS'),
     ('UBS Jardim das Flores', 'Sul', 'UBS'),
@@ -36,4 +38,6 @@ INSERT INTO unidades (nome, distrito, tipo) VALUES
     ('UPA 24h Norte', 'Norte', 'UPA'),
     ('Hospital Municipal', 'Centro', 'Hospital'),
     ('Centro de Saúde São José', 'Leste', 'Centro de Saúde'),
-    ('Policlínica Sul', 'Sul', 'Policlínica');
+    ('Policlínica Sul', 'Sul', 'Policlínica')
+) AS v(nome, distrito, tipo)
+WHERE NOT EXISTS (SELECT 1 FROM unidades);

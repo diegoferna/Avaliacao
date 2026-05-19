@@ -4,7 +4,10 @@
 --
 -- Regras principais do sistema:
 --   • status 1 = ativo (aparece no formulário) | 2 = inativo (oculto, mantido no BD)
---   • Formulário: unidade ativa → equipe ativa da mesma unidade → 5 notas (1–5) + comentário
+--   • Formulário: identificação (CPF/CNS ou opt-out) → unidade ativa → equipe (ou sem_equipe)
+--     → 5 notas (1–5), sendo acesso/integralidade/longitudinalidade opcionais se sem_equipe
+--     + comentário
+--   • Colunas avaliacoes: cpf_cns, nao_deseja_identificar, sem_equipe (migration 007)
 --   • Relatórios: notas convertidas para 0–10 → (valor - 1) * 2.5
 --   • Unidade: CNES único; equipe: par (unidade_id, INE) único
 -- =============================================================================

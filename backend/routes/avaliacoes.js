@@ -1,4 +1,50 @@
 const portal = require('../repositories/portalRepository');
+const { validarCpfOuCns, somenteDigitos } = require('../utils/documento');
+
+function validarBodyAvaliacao(body) {
+  const errors = [];
+  const naoDesejaIdentificar = Boolean(body.nao_deseja_identificar);
+  const semEquipe = Boolean(body.sem_equipe);
+
+  if (naoDesejaIdentificar) {
+    if (body.cpf_cns != null && body.cpf_cns !== '') {
+      errors.push('CPF ou CNS não deve ser informado quando optar por não se identificar.');
+    }
+  } else {
+    const resultado = validarCpfOuCns(body.cpf_cns);
+    if (!resultado.ok) {
+      errors.push('CPF ou CNS inválido.');
+    }
+  }
+
+  if (semEquipe) {
+    if (body.equipe_id != null) {
+      errors.push('Equipe não deve ser informada quando marcado "Sem equipe".');
+    }
+    for (const campo of ['acesso', 'integralidade', 'longitudinalidade']) {
+      if (body[campo] != null) {
+        errors.push(`O campo ${campo} não deve ser informado quando marcado "Sem equipe".`);
+      }
+    }
+  } else {
+    if (!body.equipe_id) {
+      errors.push('Equipe de saúde é obrigatória.');
+    }
+    for (const campo of ['acesso', 'integralidade', 'longitudinalidade']) {
+      if (body[campo] == null) {
+        errors.push(`O campo ${campo} é obrigatório.`);
+      }
+    }
+  }
+
+  for (const campo of ['receptividade', 'atendimento']) {
+    if (body[campo] == null) {
+      errors.push(`O campo ${campo} é obrigatório.`);
+    }
+  }
+
+  return errors;
+}
 
 async function avaliacoesRoutes(fastify) {
   fastify.post('/avaliacoes', {
@@ -7,19 +53,28 @@ async function avaliacoesRoutes(fastify) {
         type: 'object',
         required: [
           'unidade_id',
-          'equipe_id',
-          'acesso',
-          'integralidade',
-          'longitudinalidade',
+          'nao_deseja_identificar',
+          'sem_equipe',
           'receptividade',
           'atendimento',
         ],
         properties: {
+          cpf_cns: { type: ['string', 'null'] },
+          nao_deseja_identificar: { type: 'boolean' },
+          sem_equipe: { type: 'boolean' },
           unidade_id: { type: 'integer', minimum: 1 },
-          equipe_id: { type: 'integer', minimum: 1 },
-          acesso: { type: 'integer', minimum: 1, maximum: 5 },
-          integralidade: { type: 'integer', minimum: 1, maximum: 5 },
-          longitudinalidade: { type: 'integer', minimum: 1, maximum: 5 },
+          equipe_id: {
+            anyOf: [{ type: 'null' }, { type: 'integer', minimum: 1 }],
+          },
+          acesso: {
+            anyOf: [{ type: 'null' }, { type: 'integer', minimum: 1, maximum: 5 }],
+          },
+          integralidade: {
+            anyOf: [{ type: 'null' }, { type: 'integer', minimum: 1, maximum: 5 }],
+          },
+          longitudinalidade: {
+            anyOf: [{ type: 'null' }, { type: 'integer', minimum: 1, maximum: 5 }],
+          },
           receptividade: { type: 'integer', minimum: 1, maximum: 5 },
           atendimento: { type: 'integer', minimum: 1, maximum: 5 },
           comentario: { type: 'string', maxLength: 1000 },
@@ -27,6 +82,12 @@ async function avaliacoesRoutes(fastify) {
       },
     },
   }, async (request, reply) => {
+    const body = request.body;
+    const validationErrors = validarBodyAvaliacao(body);
+    if (validationErrors.length > 0) {
+      return reply.status(400).send({ error: validationErrors[0] });
+    }
+
     const {
       unidade_id,
       equipe_id,
@@ -36,29 +97,40 @@ async function avaliacoesRoutes(fastify) {
       receptividade,
       atendimento,
       comentario,
-    } = request.body;
+      nao_deseja_identificar,
+      sem_equipe,
+    } = body;
+
+    const cpf_cns = nao_deseja_identificar
+      ? null
+      : somenteDigitos(body.cpf_cns);
 
     const unidade = await portal.findUnidadeAtivaById(unidade_id);
     if (!unidade) {
       return reply.status(400).send({ error: 'Estabelecimento de saúde não encontrado ou inativo.' });
     }
 
-    const equipe = await portal.findEquipeAtivaByUnidade(equipe_id, unidade_id);
-    if (!equipe) {
-      return reply.status(400).send({
-        error: 'Equipe de saúde não encontrada ou não pertence ao estabelecimento selecionado.',
-      });
+    if (!sem_equipe) {
+      const equipe = await portal.findEquipeAtivaByUnidade(equipe_id, unidade_id);
+      if (!equipe) {
+        return reply.status(400).send({
+          error: 'Equipe de saúde não encontrada ou não pertence ao estabelecimento selecionado.',
+        });
+      }
     }
 
     const row = await portal.insertAvaliacao({
       unidade_id,
-      equipe_id,
-      acesso,
-      integralidade,
-      longitudinalidade,
+      equipe_id: sem_equipe ? null : equipe_id,
+      acesso: sem_equipe ? null : acesso,
+      integralidade: sem_equipe ? null : integralidade,
+      longitudinalidade: sem_equipe ? null : longitudinalidade,
       receptividade,
       atendimento,
       comentario,
+      cpf_cns,
+      nao_deseja_identificar,
+      sem_equipe,
     });
 
     return reply.status(201).send({

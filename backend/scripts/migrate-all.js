@@ -23,6 +23,7 @@ const MIGRATIONS = [
   "004_ref_analytics_dicionarios.sql",
   "005_status_codigo_numerico.sql",
   "006_dimensao_codigo_numerico.sql",
+  "007_identificacao_usuario_sem_equipe.sql",
 ];
 
 const FORCE = process.argv.includes("--force");

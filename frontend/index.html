@@ -45,6 +45,53 @@
     <!-- Main Content -->
     <main class="min-w-0">
       <form id="form-avaliacao" novalidate>
+        <!-- Identificação do usuário -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="20"
+                height="20"
+              >
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </div>
+            <h2 class="card-title">Identificação do usuário</h2>
+          </div>
+          <div class="card-body">
+            <label for="cpf-cns" class="field-label">CPF ou CNS</label>
+            <input
+              type="text"
+              id="cpf-cns"
+              name="cpf_cns"
+              inputmode="numeric"
+              maxlength="15"
+              autocomplete="off"
+              class="field-input"
+              placeholder="Informe seu CPF ou CNS"
+            />
+            <p id="erro-cpf-cns" class="text-red-500 text-xs mt-1 hidden">
+              CPF ou CNS inválido
+            </p>
+            <label class="checkbox-row mt-4">
+              <input
+                type="checkbox"
+                id="nao-deseja-identificar"
+                name="nao_deseja_identificar"
+                class="field-checkbox"
+              />
+              <span>Não desejo me identificar</span>
+            </label>
+          </div>
+        </div>
+
         <!-- Identificação do atendimento -->
         <div class="card mb-4">
           <div class="card-header">
@@ -130,6 +177,15 @@
             <p id="erro-equipe" class="text-red-500 text-xs mt-1 hidden">
               Selecione uma equipe de saúde.
             </p>
+            <label class="checkbox-row mt-4">
+              <input
+                type="checkbox"
+                id="sem-equipe"
+                name="sem_equipe"
+                class="field-checkbox"
+              />
+              <span>Sem equipe</span>
+            </label>
           </div>
         </div>
 
@@ -156,7 +212,7 @@
 
           <!-- Acesso -->
           <div class="card-body">
-            <div class="pergunta mb-6" data-campo="acesso">
+            <div class="pergunta mb-6" data-campo="acesso" data-grupo="equipe">
               <p class="question-text">
                 1. Você ficou satisfeito(a) com a facilidade para falar ou ser
                 atendido(a) pela sua equipe quando precisou?
@@ -203,7 +259,7 @@
             </div>
 
             <!-- Integralidade -->
-            <div class="pergunta mb-6" data-campo="integralidade">
+            <div class="pergunta mb-6" data-campo="integralidade" data-grupo="equipe">
               <p class="question-text">
                 2. Você ficou satisfeito(a) com as orientações da equipe sobre
                 como cuidar da sua saúde?
@@ -275,7 +331,7 @@
             </div>
 
             <!-- Longitudinalidade -->
-            <div class="pergunta mb-6" data-campo="longitudinalidade">
+            <div class="pergunta mb-6" data-campo="longitudinalidade" data-grupo="equipe">
               <p class="question-text">
                 3. Você ficou satisfeito(a) com o quanto se sentiu à vontade
                 para conversar com a equipe sobre sua vida e sua saúde?
@@ -580,6 +636,7 @@
       </div>
     </footer>
 
+    <script src="utils/documento.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

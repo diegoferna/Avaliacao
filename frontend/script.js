@@ -1,6 +1,10 @@
 const API_URL = window.location.origin;
 
 const form = document.getElementById("form-avaliacao");
+const inputCpfCns = document.getElementById("cpf-cns");
+const checkNaoDesejaIdentificar = document.getElementById("nao-deseja-identificar");
+const erroCpfCns = document.getElementById("erro-cpf-cns");
+const checkSemEquipe = document.getElementById("sem-equipe");
 const selectUnidade = document.getElementById("unidade");
 const selectEquipe = document.getElementById("equipe");
 const equipeWrap = document.getElementById("equipe-wrap");
@@ -22,6 +26,10 @@ const campos = [
   "receptividade",
   "atendimento",
 ];
+
+const camposEquipe = ["acesso", "integralidade", "longitudinalidade"];
+
+let semEquipeAtivo = false;
 
 /** Lista: fundo com cor identificável. Hover: mais saturado (mesma cor da equipe; CSS evita hover azul do SO). */
 const TINT_LISTA = 0.21;
@@ -220,6 +228,86 @@ function resetEquipeSelect() {
   }
 }
 
+function limparErroCpfCns() {
+  erroCpfCns.classList.add("hidden");
+  inputCpfCns.classList.remove("border-red-400");
+}
+
+function mostrarErroCpfCns() {
+  erroCpfCns.classList.remove("hidden");
+  inputCpfCns.classList.add("border-red-400");
+}
+
+function aplicarNaoDesejaIdentificar(ativo) {
+  if (ativo) {
+    inputCpfCns.value = "";
+    inputCpfCns.disabled = true;
+    limparErroCpfCns();
+  } else {
+    inputCpfCns.disabled = false;
+  }
+}
+
+function limparRadiosCampos(nomes) {
+  nomes.forEach((campo) => {
+    document.querySelectorAll(`input[name="${campo}"]`).forEach((radio) => {
+      radio.checked = false;
+    });
+    const pergunta = document.querySelector(`[data-campo="${campo}"]`);
+    if (!pergunta) return;
+    pergunta.classList.remove("erro");
+    const erroCampo = pergunta.querySelector(".erro-campo");
+    if (erroCampo) erroCampo.classList.add("hidden");
+  });
+}
+
+function setPerguntasEquipeDesabilitadas(desabilitar) {
+  document.querySelectorAll('.pergunta[data-grupo="equipe"]').forEach((el) => {
+    el.classList.toggle("desabilitada", desabilitar);
+    el.querySelectorAll('input[type="radio"]').forEach((radio) => {
+      radio.disabled = desabilitar;
+    });
+  });
+}
+
+function desabilitarControlesEquipe(desabilitar) {
+  selectEquipe.disabled = desabilitar || !selectUnidade.value;
+  if (equipeTrigger) {
+    equipeTrigger.disabled = desabilitar || !selectUnidade.value;
+  }
+  if (desabilitar) {
+    fecharPainelEquipe();
+    selectEquipe.value = "";
+    limparTriggerEquipe();
+    if (equipeTriggerLabel) {
+      equipeTriggerLabel.textContent = "Sem equipe selecionada";
+      equipeTriggerLabel.classList.add("text-gray-500");
+    }
+    if (equipePanel) equipePanel.innerHTML = "";
+  }
+}
+
+function aplicarSemEquipe(ativo) {
+  semEquipeAtivo = ativo;
+  const erroEquipe = document.getElementById("erro-equipe");
+
+  if (ativo) {
+    limparRadiosCampos(camposEquipe);
+    desabilitarControlesEquipe(true);
+    setPerguntasEquipeDesabilitadas(true);
+    erroEquipe.classList.add("hidden");
+    selectEquipe.classList.remove("border-red-400");
+    if (equipeTrigger) equipeTrigger.classList.remove("border-red-400");
+  } else {
+    setPerguntasEquipeDesabilitadas(false);
+    if (selectUnidade.value) {
+      carregarEquipes(selectUnidade.value);
+    } else {
+      resetEquipeSelect();
+    }
+  }
+}
+
 async function carregarUnidades() {
   try {
     const resp = await fetch(`${API_URL}/unidades`);
@@ -240,6 +328,7 @@ async function carregarUnidades() {
 }
 
 async function carregarEquipes(unidadeId) {
+  if (semEquipeAtivo) return;
   resetEquipeSelect();
   if (!unidadeId) return;
 
@@ -302,6 +391,20 @@ comentario.addEventListener("input", () => {
   charCount.textContent = String(comentario.value.length);
 });
 
+inputCpfCns.addEventListener("input", () => {
+  const digits = DocumentoUtils.somenteDigitos(inputCpfCns.value);
+  inputCpfCns.value = digits.slice(0, 15);
+  limparErroCpfCns();
+});
+
+checkNaoDesejaIdentificar.addEventListener("change", () => {
+  aplicarNaoDesejaIdentificar(checkNaoDesejaIdentificar.checked);
+});
+
+checkSemEquipe.addEventListener("change", () => {
+  aplicarSemEquipe(checkSemEquipe.checked);
+});
+
 function validarFormulario() {
   let valido = true;
 
@@ -315,8 +418,20 @@ function validarFormulario() {
     selectUnidade.classList.remove("border-red-400");
   }
 
+  if (!checkNaoDesejaIdentificar.checked) {
+    const resultado = DocumentoUtils.validarCpfOuCns(inputCpfCns.value);
+    if (!resultado.ok) {
+      mostrarErroCpfCns();
+      valido = false;
+    } else {
+      limparErroCpfCns();
+    }
+  } else {
+    limparErroCpfCns();
+  }
+
   const erroEquipe = document.getElementById("erro-equipe");
-  if (!selectEquipe.value || selectEquipe.disabled) {
+  if (!semEquipeAtivo && (!selectEquipe.value || selectEquipe.disabled)) {
     erroEquipe.classList.remove("hidden");
     selectEquipe.classList.add("border-red-400");
     if (equipeTrigger) equipeTrigger.classList.add("border-red-400");
@@ -327,7 +442,11 @@ function validarFormulario() {
     if (equipeTrigger) equipeTrigger.classList.remove("border-red-400");
   }
 
-  campos.forEach((campo) => {
+  const camposObrigatorios = semEquipeAtivo
+    ? ["receptividade", "atendimento"]
+    : campos;
+
+  camposObrigatorios.forEach((campo) => {
     const pergunta = document.querySelector(`[data-campo="${campo}"]`);
     const selecionado = document.querySelector(
       `input[name="${campo}"]:checked`,
@@ -351,7 +470,9 @@ selectUnidade.addEventListener("change", () => {
   document.getElementById("erro-unidade").classList.add("hidden");
   selectUnidade.classList.remove("border-red-400");
   document.getElementById("erro-equipe").classList.add("hidden");
-  carregarEquipes(selectUnidade.value);
+  if (!semEquipeAtivo) {
+    carregarEquipes(selectUnidade.value);
+  }
 });
 
 selectEquipe.addEventListener("change", () => {
@@ -377,7 +498,7 @@ form.addEventListener("submit", async (e) => {
 
   if (!validarFormulario()) {
     const primeiroErro = document.querySelector(
-      ".erro-campo:not(.hidden), #erro-unidade:not(.hidden), #erro-equipe:not(.hidden)",
+      ".erro-campo:not(.hidden), #erro-unidade:not(.hidden), #erro-equipe:not(.hidden), #erro-cpf-cns:not(.hidden)",
     );
     if (primeiroErro) {
       primeiroErro.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -385,17 +506,27 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
+  const naoDesejaIdentificar = checkNaoDesejaIdentificar.checked;
+  const semEquipe = checkSemEquipe.checked;
+
   const dados = {
+    nao_deseja_identificar: naoDesejaIdentificar,
+    sem_equipe: semEquipe,
     unidade_id: parseInt(selectUnidade.value, 10),
-    equipe_id: parseInt(selectEquipe.value, 10),
+    cpf_cns: naoDesejaIdentificar
+      ? null
+      : DocumentoUtils.somenteDigitos(inputCpfCns.value),
+    equipe_id: semEquipe ? null : parseInt(selectEquipe.value, 10),
     comentario: comentario.value.trim() || undefined,
   };
 
   campos.forEach((campo) => {
-    dados[campo] = parseInt(
-      document.querySelector(`input[name="${campo}"]:checked`).value,
-      10,
-    );
+    const selecionado = document.querySelector(`input[name="${campo}"]:checked`);
+    if (semEquipe && camposEquipe.includes(campo)) {
+      dados[campo] = null;
+    } else {
+      dados[campo] = parseInt(selecionado.value, 10);
+    }
   });
 
   btnEnviar.classList.add("btn-loading");
@@ -427,6 +558,10 @@ form.addEventListener("submit", async (e) => {
 btnNovaAvaliacao.addEventListener("click", () => {
   form.reset();
   charCount.textContent = "0";
+  semEquipeAtivo = false;
+  aplicarNaoDesejaIdentificar(false);
+  aplicarSemEquipe(false);
+  limparErroCpfCns();
   resetEquipeSelect();
   carregarEquipes("");
   mensagemSucesso.classList.add("hidden");
