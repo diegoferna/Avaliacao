@@ -1,3 +1,5 @@
+const fp = require("fastify-plugin");
+
 async function partnerApiRoutes(fastify) {
   await fastify.register(require("@fastify/rate-limit"), {
     max: parseInt(process.env.PARTNER_RATE_LIMIT_MAX || "100", 10),
@@ -9,8 +11,10 @@ async function partnerApiRoutes(fastify) {
     }),
   });
 
-  await fastify.register(require("../../plugins/partnerAuth"));
-  await fastify.register(require("../../plugins/partnerLogging"));
+  // fastify-plugin: hooks de auth/logging valem para TODAS as rotas /api/v1
+  // (sem fp, o hook ficava isolado e avaliacoes/unidades/equipes ficavam abertas)
+  await fastify.register(fp(require("../../plugins/partnerAuth")));
+  await fastify.register(fp(require("../../plugins/partnerLogging")));
 
   fastify.get("/health", {
     config: { skipPartnerAuth: true },

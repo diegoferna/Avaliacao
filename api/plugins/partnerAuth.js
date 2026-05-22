@@ -39,5 +39,4 @@ async function partnerAuthPlugin(fastify) {
   });
 }
 
-// Sem fastify-plugin: hook fica só nas rotas /api/v1 (encapsulado)
 module.exports = partnerAuthPlugin;
