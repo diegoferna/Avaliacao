@@ -186,6 +186,33 @@
               />
               <span>Sem equipe</span>
             </label>
+
+            <label for="local-atendimento" class="field-label mt-4">
+              Local do Atendimento
+            </label>
+            <select
+              id="local-atendimento"
+              name="local_atendimento"
+              required
+              class="field-select"
+            >
+              <option value="">Selecione o local do atendimento...</option>
+              <option value="Consultório Médico/Enfermagem">
+                Consultório Médico/Enfermagem
+              </option>
+              <option value="Consultório Odontológico">
+                Consultório Odontológico
+              </option>
+              <option value="Sala de Vacina">Sala de Vacina</option>
+              <option value="Sala de Curativo">Sala de Curativo</option>
+              <option value="Sala de Procedimentos">Sala de Procedimentos</option>
+              <option value="Recepção">Recepção</option>
+              <option value="Atividade Coletiva">Atividade Coletiva</option>
+              <option value="Farmácia">Farmácia</option>
+            </select>
+            <p id="erro-local-atendimento" class="text-red-500 text-xs mt-1 hidden">
+              Selecione o local do atendimento.
+            </p>
           </div>
         </div>
 
@@ -214,8 +241,8 @@
           <div class="card-body">
             <div class="pergunta mb-6" data-campo="acesso" data-grupo="equipe">
               <p class="question-text">
-                1. Você ficou satisfeito(a) com a facilidade para falar ou ser
-                atendido(a) pela sua equipe quando precisou?
+                1. Quanto você está satisfeito(a) com a possibilidade de conseguir
+                atendimento com a equipe quando precisa?
               </p>
               <div class="escala-satisfacao flex flex-wrap gap-2">
                 <label class="opcao-radio">
@@ -261,8 +288,8 @@
             <!-- Integralidade -->
             <div class="pergunta mb-6" data-campo="integralidade" data-grupo="equipe">
               <p class="question-text">
-                2. Você ficou satisfeito(a) com as orientações da equipe sobre
-                como cuidar da sua saúde?
+                2. Quanto você está satisfeito(a) com a forma como a equipe cuida
+                da sua saúde?
               </p>
               <div class="escala-satisfacao flex flex-wrap gap-2">
                 <label class="opcao-radio">
@@ -333,8 +360,8 @@
             <!-- Longitudinalidade -->
             <div class="pergunta mb-6" data-campo="longitudinalidade" data-grupo="equipe">
               <p class="question-text">
-                3. Você ficou satisfeito(a) com o quanto se sentiu à vontade
-                para conversar com a equipe sobre sua vida e sua saúde?
+                3. Quanto você está satisfeito(a) com a proximidade que tem com a
+                equipe para falar sobre sua saúde?
               </p>
               <div class="escala-satisfacao flex flex-wrap gap-2">
                 <label class="opcao-radio">
@@ -405,8 +432,8 @@
             <!-- Receptividade -->
             <div class="pergunta mb-6" data-campo="receptividade">
               <p class="question-text">
-                4. Você ficou satisfeito(a) com a forma como foi recebido(a) na
-                unidade de saúde?
+                4. Quanto você está satisfeito(a) com a forma como foi
+                recebido(a) na unidade de saúde?
               </p>
               <div class="escala-satisfacao flex flex-wrap gap-2">
                 <label class="opcao-radio">
@@ -477,8 +504,8 @@
             <!-- Atendimento -->
             <div class="pergunta mb-2" data-campo="atendimento">
               <p class="question-text">
-                5. De forma geral, você ficou satisfeito(a) com o atendimento na
-                unidade de saúde?
+                5. De forma geral, quanto você está satisfeito(a) com o
+                atendimento nesta unidade de saúde?
               </p>
               <div class="escala-satisfacao flex flex-wrap gap-2">
                 <label class="opcao-radio">

@@ -21,6 +21,7 @@ const AVALIACOES_SELECT = `
     a.longitudinalidade AS resp_longitudinalidade,
     a.receptividade AS resp_receptividade,
     a.atendimento AS resp_atendimento,
+    a.local_atendimento,
     (a.acesso - 1) * 2.5 AS pontuacao_acesso,
     (a.integralidade - 1) * 2.5 AS pontuacao_integralidade,
     (a.longitudinalidade - 1) * 2.5 AS pontuacao_longitudinalidade,

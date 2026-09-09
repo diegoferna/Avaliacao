@@ -24,6 +24,7 @@ const MIGRATIONS = [
   "005_status_codigo_numerico.sql",
   "006_dimensao_codigo_numerico.sql",
   "007_identificacao_usuario_sem_equipe.sql",
+  "008_local_atendimento_textos_unidades.sql",
 ];
 
 const FORCE = process.argv.includes("--force");

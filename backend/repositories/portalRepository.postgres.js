@@ -51,14 +51,15 @@ async function insertAvaliacao(row) {
     cpf_cns,
     nao_deseja_identificar,
     sem_equipe,
+    local_atendimento,
   } = row;
   const result = await pool.query(
     `INSERT INTO avaliacoes (
       unidade_id, equipe_id, acesso, integralidade, longitudinalidade,
       receptividade, atendimento, comentario,
-      cpf_cns, nao_deseja_identificar, sem_equipe
+      cpf_cns, nao_deseja_identificar, sem_equipe, local_atendimento
     )
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
      RETURNING id, created_at`,
     [
       unidade_id,
@@ -72,6 +73,7 @@ async function insertAvaliacao(row) {
       cpf_cns || null,
       Boolean(nao_deseja_identificar),
       Boolean(sem_equipe),
+      local_atendimento || null,
     ]
   );
   return result.rows[0];

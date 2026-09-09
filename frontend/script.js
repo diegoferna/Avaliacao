@@ -7,6 +7,7 @@ const erroCpfCns = document.getElementById("erro-cpf-cns");
 const checkSemEquipe = document.getElementById("sem-equipe");
 const selectUnidade = document.getElementById("unidade");
 const selectEquipe = document.getElementById("equipe");
+const selectLocalAtendimento = document.getElementById("local-atendimento");
 const equipeWrap = document.getElementById("equipe-wrap");
 const equipeTrigger = document.getElementById("equipe-trigger");
 const equipeTriggerLabel = document.getElementById("equipe-trigger-label");
@@ -442,6 +443,16 @@ function validarFormulario() {
     if (equipeTrigger) equipeTrigger.classList.remove("border-red-400");
   }
 
+  const erroLocal = document.getElementById("erro-local-atendimento");
+  if (selectLocalAtendimento && !selectLocalAtendimento.value) {
+    if (erroLocal) erroLocal.classList.remove("hidden");
+    selectLocalAtendimento.classList.add("border-red-400");
+    valido = false;
+  } else if (selectLocalAtendimento) {
+    if (erroLocal) erroLocal.classList.add("hidden");
+    selectLocalAtendimento.classList.remove("border-red-400");
+  }
+
   const camposObrigatorios = semEquipeAtivo
     ? ["receptividade", "atendimento"]
     : campos;
@@ -482,6 +493,14 @@ selectEquipe.addEventListener("change", () => {
   atualizarTriggerEquipe();
 });
 
+if (selectLocalAtendimento) {
+  selectLocalAtendimento.addEventListener("change", () => {
+    const erroLocal = document.getElementById("erro-local-atendimento");
+    if (erroLocal) erroLocal.classList.add("hidden");
+    selectLocalAtendimento.classList.remove("border-red-400");
+  });
+}
+
 campos.forEach((campo) => {
   document.querySelectorAll(`input[name="${campo}"]`).forEach((radio) => {
     radio.addEventListener("change", () => {
@@ -498,7 +517,7 @@ form.addEventListener("submit", async (e) => {
 
   if (!validarFormulario()) {
     const primeiroErro = document.querySelector(
-      ".erro-campo:not(.hidden), #erro-unidade:not(.hidden), #erro-equipe:not(.hidden), #erro-cpf-cns:not(.hidden)",
+      ".erro-campo:not(.hidden), #erro-unidade:not(.hidden), #erro-equipe:not(.hidden), #erro-local-atendimento:not(.hidden), #erro-cpf-cns:not(.hidden)",
     );
     if (primeiroErro) {
       primeiroErro.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -513,6 +532,9 @@ form.addEventListener("submit", async (e) => {
     nao_deseja_identificar: naoDesejaIdentificar,
     sem_equipe: semEquipe,
     unidade_id: parseInt(selectUnidade.value, 10),
+    local_atendimento: selectLocalAtendimento
+      ? selectLocalAtendimento.value
+      : undefined,
     cpf_cns: naoDesejaIdentificar
       ? null
       : DocumentoUtils.somenteDigitos(inputCpfCns.value),

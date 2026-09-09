@@ -1,6 +1,17 @@
 const portal = require('../repositories/portalRepository');
 const { validarCpfOuCns, somenteDigitos } = require('../utils/documento');
 
+const LOCAIS_ATENDIMENTO = [
+  'Consultório Médico/Enfermagem',
+  'Consultório Odontológico',
+  'Sala de Vacina',
+  'Sala de Curativo',
+  'Sala de Procedimentos',
+  'Recepção',
+  'Atividade Coletiva',
+  'Farmácia',
+];
+
 function validarBodyAvaliacao(body) {
   const errors = [];
   const naoDesejaIdentificar = Boolean(body.nao_deseja_identificar);
@@ -15,6 +26,10 @@ function validarBodyAvaliacao(body) {
     if (!resultado.ok) {
       errors.push('CPF ou CNS inválido.');
     }
+  }
+
+  if (!body.local_atendimento || !LOCAIS_ATENDIMENTO.includes(body.local_atendimento)) {
+    errors.push('Local do atendimento é obrigatório.');
   }
 
   if (semEquipe) {
@@ -55,6 +70,7 @@ async function avaliacoesRoutes(fastify) {
           'unidade_id',
           'nao_deseja_identificar',
           'sem_equipe',
+          'local_atendimento',
           'receptividade',
           'atendimento',
         ],
@@ -63,6 +79,7 @@ async function avaliacoesRoutes(fastify) {
           nao_deseja_identificar: { type: 'boolean' },
           sem_equipe: { type: 'boolean' },
           unidade_id: { type: 'integer', minimum: 1 },
+          local_atendimento: { type: 'string', enum: LOCAIS_ATENDIMENTO },
           equipe_id: {
             anyOf: [{ type: 'null' }, { type: 'integer', minimum: 1 }],
           },
@@ -99,6 +116,7 @@ async function avaliacoesRoutes(fastify) {
       comentario,
       nao_deseja_identificar,
       sem_equipe,
+      local_atendimento,
     } = body;
 
     const cpf_cns = nao_deseja_identificar
@@ -131,6 +149,7 @@ async function avaliacoesRoutes(fastify) {
       cpf_cns,
       nao_deseja_identificar,
       sem_equipe,
+      local_atendimento,
     });
 
     return reply.status(201).send({
